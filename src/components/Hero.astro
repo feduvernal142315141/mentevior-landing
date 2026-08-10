@@ -1,64 +1,110 @@
 ---
-// El visual del hero es un mockup estilizado del producto real —la pantalla de
-// Data Collection con su gráfico— construido en HTML/CSS/SVG puro. Nada de
-// fotos de stock: el producto ES el argumento.
+// El visual es un mockup del producto en HTML/CSS/SVG puro — sin fotos.
+// Composición: el texto vende claridad (limpio, sin efectos), el showcase
+// vende tecnología (profundidad, luz, tilt). La iluminación es ambiental:
+// se siente, no se ve.
 ---
 
-<section class="surface-signature overflow-hidden pt-[136px] pb-[72px] md:pt-[160px] lg:pt-[184px] lg:pb-[128px]" id="product">
-  <div class="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-14 px-6 md:px-8 lg:grid-cols-[55fr_45fr] lg:gap-12 lg:px-12">
-    <!-- ── Texto ── -->
+<section
+  class="hero-surface overflow-hidden pt-[104px] pb-12 sm:pt-[128px] lg:pt-[172px] lg:pb-[120px]"
+  id="product"
+>
+  <!-- Capas de luz. La aurora usa blur(90px): sólo desktop, en móvil es cara -->
+  <div class="hero-aurora hidden md:block" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-glow-copy" aria-hidden="true"></div>
+  <div class="hero-glow-product hidden lg:block" aria-hidden="true"></div>
+
+  <div
+    class="relative mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-6 md:px-8 lg:grid-cols-[55fr_45fr] lg:gap-14 lg:px-12"
+  >
+    <!-- ── Copy ── -->
     <div>
-      <span class="eyebrow-pill text-eyebrow reveal">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M19 14c1.5-1.5 2-3.5 2-5a7 7 0 0 0-14 0M5 10c-1.5 1.5-2 3.5-2 5a7 7 0 0 0 14 0" />
-        </svg>
+      <span class="hero-badge text-eyebrow enter" style="--d: 60ms">
+        <span class="badge-dot" aria-hidden="true"></span>
         Built for ABA practices
       </span>
 
-      <h1 class="text-display reveal mt-6" style="--reveal-delay: 70ms">
-        Every part of your ABA practice, finally
-        <span class="text-gradient-brand">in one place</span>
+      <h1 class="text-display enter mt-7" style="--d: 140ms">
+        Every part of your<br />
+        ABA practice,<br class="hidden sm:block" />
+        <span class="headline-glow text-gradient-brand">finally in one place</span>
       </h1>
 
-      <p class="text-body-lg reveal mt-6 max-w-[34rem] text-ink-muted" style="--reveal-delay: 140ms">
+      <p
+        class="text-body-lg enter mt-6 max-w-[32rem] leading-[1.65] text-ink-muted"
+        style="--d: 240ms"
+      >
         Data collection, session notes, supervision, authorizations and billing —
         connected end to end, so your team documents once and everything else follows.
       </p>
 
-      <div class="reveal mt-9 flex flex-wrap items-center gap-3.5" style="--reveal-delay: 210ms">
+      <div class="enter mt-9 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:items-center" style="--d: 330ms">
         <a href="#demo" class="btn-primary">Request a demo</a>
         <a href="#features" class="btn-ghost">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <svg
+            class="ic-play"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
             <path d="M8 5.14v13.72L19 12 8 5.14Z" />
           </svg>
           See how it works
         </a>
       </div>
 
-      <p class="reveal mt-7 text-[14px] text-ink-muted" style="--reveal-delay: 280ms">
-        HIPAA compliant&ensp;·&ensp;Role-based access&ensp;·&ensp;Built with BCBAs
-      </p>
+      <ul class="enter mt-8 flex flex-wrap items-center gap-x-5 gap-y-2" style="--d: 420ms">
+        {["HIPAA compliant", "Role-based access", "Built with BCBAs"].map((item) => (
+          <li class="flex items-center gap-1.5 text-[13.5px] text-ink-muted">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#037ECC"
+              stroke-width="2.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              opacity="0.75"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
 
-    <!-- ── Mockup de producto ── -->
-    <div class="reveal relative mx-auto w-full max-w-[560px] lg:max-w-none" style="--reveal-delay: 200ms" aria-hidden="true">
-      <!-- Glow -->
+    <!-- ── Product showcase ── -->
+    <div
+      class="enter-visual relative mx-auto w-full max-w-[560px] lg:max-w-none"
+      id="showcase"
+      aria-hidden="true"
+    >
+      <!-- Luz trasera del conjunto -->
       <div
-        class="absolute inset-0 -m-12"
-        style="background: radial-gradient(ellipse 60% 55% at 55% 45%, rgba(3,126,204,0.08), transparent 70%)"
+        class="absolute inset-0 -m-14"
+        style="background: radial-gradient(ellipse 62% 58% at 55% 45%, rgba(3,126,204,0.09), transparent 70%)"
       >
       </div>
 
-      <!-- Browser frame -->
+      <!-- Frame con tilt -->
       <div
-        class="relative rounded-[24px] border border-line bg-white p-1.5"
-        style="box-shadow: var(--shadow-float)"
+        class="showcase-frame relative rounded-[24px] border border-line bg-white p-1.5"
+        id="showcase-frame"
+        style="box-shadow: var(--shadow-float), 0 0 0 1px rgba(255,255,255,0.6) inset"
       >
         <div class="flex items-center gap-1.5 px-3 py-2.5">
           <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
-          <span class="ml-3 flex h-6 flex-1 items-center rounded-md bg-page-alt px-3 text-[10px] text-ink-muted">
+          <span
+            class="ml-3 flex h-6 flex-1 items-center rounded-md bg-page-alt px-3 text-[10px] text-ink-muted"
+          >
             app.mentevior.com / data-collection
           </span>
         </div>
@@ -69,34 +115,54 @@
               <p class="text-eyebrow !text-[10px] text-ink-muted">Data Collection</p>
               <p class="mt-1 text-[15px] font-semibold">Property Destruction — Frequency</p>
             </div>
-            <span class="rounded-full bg-[rgba(3,126,204,0.08)] px-2.5 py-1 text-[10.5px] font-semibold text-brand-500">
+            <span
+              class="rounded-full bg-[rgba(3,126,204,0.08)] px-2.5 py-1 text-[10.5px] font-semibold text-brand-500"
+            >
               May 2026
             </span>
           </div>
 
-          <!-- Chart -->
+          <!-- Chart: la línea se dibuja una vez al cargar, después queda quieta -->
           <svg viewBox="0 0 460 170" class="mt-4 w-full" role="img">
             <defs>
               <linearGradient id="hero-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#037ECC" stop-opacity="0.16" />
-                <stop offset="100%" stop-color="#037ECC" stop-opacity="0" />
+                <stop offset="0%" stop-color="#037ECC" stop-opacity="0.16"></stop>
+                <stop offset="100%" stop-color="#037ECC" stop-opacity="0"></stop>
               </linearGradient>
             </defs>
             {[0, 1, 2, 3].map((i) => (
-              <line x1="0" y1={20 + i * 40} x2="460" y2={20 + i * 40} stroke="hsl(240 20% 93%)" stroke-dasharray="3 3" />
+              <line
+                x1="0"
+                y1={20 + i * 40}
+                x2="460"
+                y2={20 + i * 40}
+                stroke="hsl(240 20% 93%)"
+                stroke-dasharray="3 3"
+              />
             ))}
             <path
+              class="draw-fill"
               d="M0 118 C 30 112, 50 96, 80 100 S 140 122, 170 108 S 230 62, 260 70 S 320 96, 350 78 S 420 34, 460 40 L 460 170 L 0 170 Z"
               fill="url(#hero-fill)"
-            />
+            ></path>
             <path
+              class="draw-line"
+              pathLength="1"
               d="M0 118 C 30 112, 50 96, 80 100 S 140 122, 170 108 S 230 62, 260 70 S 320 96, 350 78 S 420 34, 460 40"
               fill="none"
               stroke="#037ECC"
               stroke-width="2.5"
               stroke-linecap="round"
-            />
-            <circle cx="350" cy="78" r="4.5" fill="#fff" stroke="#037ECC" stroke-width="2.5" />
+            ></path>
+            <circle
+              class="draw-dot"
+              cx="350"
+              cy="78"
+              r="4.5"
+              fill="#fff"
+              stroke="#037ECC"
+              stroke-width="2.5"
+            ></circle>
           </svg>
 
           <div class="mt-3 flex items-center justify-between text-[10px] text-ink-muted">
@@ -105,34 +171,102 @@
         </div>
       </div>
 
-      <!-- Stat tile flotante -->
+      <!-- Cards flotantes: parallax en el contenedor, float en el interno.
+           Ritmos distintos a propósito: nunca sincronizadas. -->
       <div
-        class="absolute -left-4 -bottom-9 w-[190px] rotate-[-2deg] rounded-[20px] border border-line bg-white p-4 sm:-left-8"
-        style="box-shadow: var(--shadow-float)"
+        class="parallax-layer absolute -bottom-8 left-1 sm:-left-8"
+        data-parallax="8"
       >
-        <p class="text-eyebrow !text-[9.5px] text-ink-muted">Sessions this week</p>
-        <div class="mt-1.5 flex items-end justify-between">
-          <span class="text-[26px] font-semibold leading-none tabular-nums">128</span>
-          <svg viewBox="0 0 64 24" class="h-6 w-16" aria-hidden="true">
-            <path d="M0 18 L 10 15 L 20 17 L 30 10 L 40 12 L 52 6 L 64 8" fill="none" stroke="#037ECC" stroke-width="2" stroke-linecap="round" />
-          </svg>
+        <div
+          class="float-a w-[190px] rotate-[-2deg] rounded-[20px] border border-line bg-white/95 p-4 backdrop-blur-sm"
+          style="box-shadow: var(--shadow-float)"
+        >
+          <p class="text-eyebrow !text-[9.5px] text-ink-muted">Sessions this week</p>
+          <div class="mt-1.5 flex items-end justify-between">
+            <span class="text-[26px] font-semibold leading-none tabular-nums">128</span>
+            <svg viewBox="0 0 64 24" class="h-6 w-16" aria-hidden="true">
+              <path
+                d="M0 18 L 10 15 L 20 17 L 30 10 L 40 12 L 52 6 L 64 8"
+                fill="none"
+                stroke="#037ECC"
+                stroke-width="2"
+                stroke-linecap="round"></path>
+            </svg>
+          </div>
         </div>
       </div>
 
-      <!-- Compliance badge flotante -->
       <div
-        class="absolute -right-3 -top-7 w-[195px] rotate-[2deg] rounded-[20px] border border-line bg-white p-4 sm:-right-6"
-        style="box-shadow: var(--shadow-float)"
+        class="parallax-layer absolute -top-6 right-1 sm:-right-6"
+        data-parallax="-6"
       >
-        <p class="text-eyebrow !text-[9.5px] text-ink-muted">Supervision</p>
-        <div class="mt-1.5 flex items-center gap-2">
-          <span class="text-[22px] font-semibold leading-none tabular-nums">12.4%</span>
-          <span class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2 py-0.5 text-[10px] font-semibold text-[hsl(142_60%_30%)]">
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-            Met
-          </span>
+        <div
+          class="float-b w-[195px] rotate-[2deg] rounded-[20px] border border-line bg-white/95 p-4 backdrop-blur-sm"
+          style="box-shadow: var(--shadow-float)"
+        >
+          <p class="text-eyebrow !text-[9.5px] text-ink-muted">Supervision</p>
+          <div class="mt-1.5 flex items-center gap-2">
+            <span class="text-[22px] font-semibold leading-none tabular-nums">12.4%</span>
+            <span
+              class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2 py-0.5 text-[10px] font-semibold text-[hsl(142_60%_30%)]"
+            >
+              <svg
+                width="9"
+                height="9"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              Met
+            </span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  // Tilt del showcase: SOLO desktop con puntero fino y sin reduced-motion.
+  // Un solo listener, throttled con rAF, transform-only. Máximo 2.4°.
+  const fine = matchMedia("(pointer: fine)");
+  const noMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (fine.matches && !noMotion.matches) {
+    const wrap = document.getElementById("showcase")!;
+    const frame = document.getElementById("showcase-frame")!;
+    const layers = Array.from(
+      wrap.querySelectorAll<HTMLElement>("[data-parallax]"),
+    );
+
+    let raf = 0;
+    let px = 0;
+    let py = 0;
+
+    wrap.addEventListener("pointermove", (e) => {
+      const r = wrap.getBoundingClientRect();
+      px = (e.clientX - r.left) / r.width - 0.5;
+      py = (e.clientY - r.top) / r.height - 0.5;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        frame.style.transform = `perspective(1200px) rotateX(${(-py * 2.4).toFixed(2)}deg) rotateY(${(px * 2.4).toFixed(2)}deg)`;
+        for (const layer of layers) {
+          const factor = Number(layer.dataset.parallax ?? 0);
+          layer.style.setProperty("--px", `${(px * factor).toFixed(1)}px`);
+          layer.style.setProperty("--py", `${(py * factor).toFixed(1)}px`);
+        }
+      });
+    });
+
+    wrap.addEventListener("pointerleave", () => {
+      frame.style.transform = "";
+      for (const layer of layers) {
+        layer.style.removeProperty("--px");
+        layer.style.removeProperty("--py");
+      }
+    });
+  }
+</script>
