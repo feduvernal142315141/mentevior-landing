@@ -310,45 +310,43 @@
   }
 
   /* =========================================================
-     NAV — transparente sobre el hero; al scrollear se
-     "desprende": barra flotante con blur, borde y radio.
-     La transición vive en .nav-shell, no en el header.
+     NAV — ancho completo siempre (patrón Linear/Stripe/Vercel):
+     transparente en reposo; al scrollear gana blur, un borde
+     inferior de 1px y una sombra mínima. La altura comprime
+     apenas (72 → 64px). Nada de pills que se encogen.
      ========================================================= */
 
   .site-nav {
-    pointer-events: none; /* el header cubre todo el ancho; sólo el shell recibe clicks */
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 300ms var(--ease-standard),
+      border-color 300ms var(--ease-standard),
+      box-shadow 300ms var(--ease-standard),
+      backdrop-filter 300ms var(--ease-standard);
   }
 
-  .nav-shell {
-    pointer-events: auto;
+  .site-nav.is-scrolled {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border-bottom-color: hsl(240 20% 92% / 0.8);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: min(1200px, 100%);
     height: 72px;
     margin: 0 auto;
     padding: 0 24px;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    background: transparent;
-    transition:
-      width 340ms var(--ease-standard),
-      height 340ms var(--ease-standard),
-      margin 340ms var(--ease-standard),
-      background-color 340ms var(--ease-standard),
-      border-color 340ms var(--ease-standard),
-      box-shadow 340ms var(--ease-standard),
-      backdrop-filter 340ms var(--ease-standard);
+    transition: height 300ms var(--ease-standard);
   }
 
-  .site-nav.is-scrolled .nav-shell {
-    width: min(1080px, calc(100% - 20px));
-    height: 58px;
-    margin-top: 10px;
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(1.5);
-    -webkit-backdrop-filter: blur(20px) saturate(1.5);
-    border-color: hsl(240 20% 91% / 0.9);
-    box-shadow:
-      0 1px 2px rgba(15, 23, 42, 0.04),
-      0 8px 32px -8px rgba(15, 23, 42, 0.12);
+  .site-nav.is-scrolled .nav-inner {
+    height: 64px;
   }
 
   /* Links del nav: subrayado que crece desde la izquierda */
@@ -435,107 +433,59 @@
   }
 
   /* =========================================================
-     MOBILE SHEET — panel flotante con overlay, no un div
-     pegado al viewport. Entra con opacity + translate + scale
-     mínimos; los items hacen stagger de 40ms.
+     MOBILE MENU — pantalla completa bajo el nav (patrón
+     Linear): links grandes, divisores hairline, acciones
+     abajo. UNA transición del panel entero: fade + 6px.
+     Sin números, sin stagger.
      ========================================================= */
 
-  .menu-overlay {
+  .mobile-menu {
     position: fixed;
     inset: 0;
     z-index: 40;
-    background: rgba(15, 23, 42, 0.22);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 260ms var(--ease-standard);
-  }
-
-  .menu-overlay.is-open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .mobile-sheet {
-    position: fixed;
-    z-index: 50;
-    left: 10px;
-    right: 10px;
-    top: 78px;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.92);
+    display: flex;
+    flex-direction: column;
+    padding-top: 88px;
+    background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(24px) saturate(1.4);
     -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid hsl(240 20% 91%);
-    box-shadow:
-      0 24px 64px -16px rgba(15, 23, 42, 0.25),
-      0 4px 16px rgba(15, 23, 42, 0.08);
-    transform-origin: top center;
     opacity: 0;
-    transform: translateY(-10px) scale(0.98);
+    transform: translateY(-6px);
     pointer-events: none;
     visibility: hidden;
     transition:
-      opacity 300ms var(--ease-out-quart),
-      transform 300ms var(--ease-out-quart),
-      visibility 0s linear 300ms;
+      opacity 240ms var(--ease-standard),
+      transform 240ms var(--ease-standard),
+      visibility 0s linear 240ms;
   }
 
-  .mobile-sheet.is-open {
+  .mobile-menu.is-open {
     opacity: 1;
     transform: none;
     pointer-events: auto;
     visibility: visible;
     transition:
-      opacity 300ms var(--ease-out-quart),
-      transform 300ms var(--ease-out-quart),
+      opacity 240ms var(--ease-standard),
+      transform 240ms var(--ease-standard),
       visibility 0s;
   }
 
-  .sheet-item {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 260ms var(--ease-out-quart), transform 260ms var(--ease-out-quart);
-  }
-
-  .mobile-sheet.is-open .sheet-item {
-    opacity: 1;
-    transform: none;
-  }
-
-  .mobile-sheet.is-open .sheet-item:nth-child(1) { transition-delay: 50ms; }
-  .mobile-sheet.is-open .sheet-item:nth-child(2) { transition-delay: 90ms; }
-  .mobile-sheet.is-open .sheet-item:nth-child(3) { transition-delay: 130ms; }
-  .mobile-sheet.is-open .sheet-item:nth-child(4) { transition-delay: 170ms; }
-  .mobile-sheet.is-open .sheet-item:nth-child(5) { transition-delay: 210ms; }
-  .mobile-sheet.is-open .sheet-item:nth-child(6) { transition-delay: 250ms; }
-
-  .sheet-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    border-radius: 14px;
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--color-ink);
-    transition: background-color 180ms var(--ease-standard);
-  }
-
-  .sheet-link:hover,
-  .sheet-link:focus-visible {
-    background: rgba(3, 126, 204, 0.06);
-    outline: none;
-  }
-
-  .sheet-link .sheet-num {
-    font-size: 12px;
+  .mobile-menu-link {
+    display: block;
+    padding: 18px 0;
+    font-size: 22px;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--color-ink-muted);
-    opacity: 0.6;
-    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+    transition: color 180ms var(--ease-standard), padding-left 220ms var(--ease-standard);
+  }
+
+  .mobile-menu-link:hover,
+  .mobile-menu-link:focus-visible {
+    color: var(--color-brand-500);
+    padding-left: 6px;
+    outline: none;
   }
 
   /* =========================================================
@@ -878,9 +828,7 @@
     transform: none;
   }
 
-  .mobile-sheet,
-  .sheet-item,
-  .menu-overlay {
+  .mobile-menu {
     transition-duration: 0.01ms;
   }
 }

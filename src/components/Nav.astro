@@ -1,18 +1,19 @@
 ---
-// Nav en dos estados: transparente e integrado al hero en reposo; al scrollear
-// se "desprende" como barra flotante (blur, borde, radio, altura reducida).
-// El menú mobile es un sheet flotante con overlay — no un div que empuja todo.
+// Nav a ancho completo (patrón Linear/Stripe/Vercel): transparente sobre el
+// hero; al scrollear gana blur, borde inferior hairline y comprime 72→64px.
+// El menú mobile es pantalla completa, sin adornos: links grandes, divisores
+// finos y las acciones al fondo.
 
 const links = [
-  { label: "Product", href: "#product", num: "01" },
-  { label: "Features", href: "#features", num: "02" },
-  { label: "Security", href: "#security", num: "03" },
-  { label: "Pricing", href: "#pricing", num: "04" },
+  { label: "Product", href: "#product" },
+  { label: "Features", href: "#features" },
+  { label: "Security", href: "#security" },
+  { label: "Pricing", href: "#pricing" },
 ];
 ---
 
 <header class="site-nav enter-fade fixed inset-x-0 top-0 z-50" id="site-nav" style="--d: 0ms">
-  <div class="nav-shell flex items-center justify-between">
+  <div class="nav-inner">
     <a href="/" class="flex items-center gap-2.5" aria-label="MenteVior home">
       <img src="/logoMenteVior.png" alt="" class="h-9 w-9 object-contain" width="36" height="36" />
       <span class="text-[19px] font-bold tracking-[-0.02em]">
@@ -49,40 +50,30 @@ const links = [
   </div>
 </header>
 
-<!-- Overlay + sheet viven fuera del header para no heredar su stacking -->
-<div class="menu-overlay lg:hidden" id="menu-overlay" aria-hidden="true"></div>
-
+<!-- Menú mobile: pantalla completa bajo el nav. Vive fuera del header para no
+     heredar su stacking; el nav (z-50) queda visible encima con la X. -->
 <div
-  class="mobile-sheet lg:hidden"
+  class="mobile-menu lg:hidden"
   id="mobile-menu"
   role="dialog"
   aria-modal="true"
   aria-label="Navigation menu"
   inert
 >
-  <nav class="p-3" aria-label="Mobile">
-    {links.map((link) => (
-      <div class="sheet-item">
-        <a href={link.href} class="sheet-link">
-          <span>{link.label}</span>
-          <span class="sheet-num" aria-hidden="true">{link.num}</span>
-        </a>
-      </div>
-    ))}
-
-    <div class="sheet-item my-2 border-t border-line"></div>
-
-    <div class="sheet-item p-1.5">
-      <a href="#demo" class="btn-primary w-full">Request a demo</a>
-    </div>
+  <nav class="flex-1 overflow-y-auto px-6" aria-label="Mobile">
+    {links.map((link) => <a href={link.href} class="mobile-menu-link">{link.label}</a>)}
   </nav>
+
+  <div class="space-y-3 px-6 pb-8 pt-4">
+    <a href="#demo" class="btn-primary w-full">Request a demo</a>
+    <a href="#demo" class="btn-ghost w-full">Sign in</a>
+  </div>
 </div>
 
 <script>
   const nav = document.getElementById("site-nav")!;
   const toggle = document.getElementById("menu-toggle")!;
-  const overlay = document.getElementById("menu-overlay")!;
-  const sheet = document.getElementById("mobile-menu")! as HTMLElement & { inert: boolean };
+  const menu = document.getElementById("mobile-menu")! as HTMLElement & { inert: boolean };
 
   // ── Estado scrolled ──
   let menuOpen = false;
@@ -94,30 +85,27 @@ const links = [
   // ── Menú mobile ──
   const setOpen = (open: boolean) => {
     menuOpen = open;
-    sheet.classList.toggle("is-open", open);
-    overlay.classList.toggle("is-open", open);
+    menu.classList.toggle("is-open", open);
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    sheet.inert = !open;
-    // Overlay activo ⇒ el fondo no debe scrollear
+    menu.inert = !open;
     document.body.style.overflow = open ? "hidden" : "";
-    // Con el sheet abierto el nav necesita fondo aunque estemos arriba del todo
+    // Con el menú abierto el nav necesita fondo aunque estemos arriba del todo
     syncScrolled();
 
     if (open) {
-      (sheet.querySelector("a") as HTMLElement | null)?.focus({ preventScroll: true });
+      (menu.querySelector("a") as HTMLElement | null)?.focus({ preventScroll: true });
     } else {
       toggle.focus({ preventScroll: true });
     }
   };
 
   toggle.addEventListener("click", () => setOpen(!menuOpen));
-  overlay.addEventListener("click", () => setOpen(false));
-  sheet.querySelectorAll("a").forEach((a) =>
+  menu.querySelectorAll("a").forEach((a) =>
     a.addEventListener("click", () => setOpen(false)),
   );
-  // Escape cierra; Tab queda ciclando entre el toggle y el sheet mientras está
-  // abierto — es lo que aria-modal promete.
+
+  // Escape cierra; Tab cicla entre el toggle y el menú — lo que aria-modal promete
   document.addEventListener("keydown", (e) => {
     if (!menuOpen) return;
 
@@ -127,7 +115,7 @@ const links = [
     }
 
     if (e.key !== "Tab") return;
-    const focusables = [toggle, ...sheet.querySelectorAll<HTMLElement>("a")];
+    const focusables = [toggle, ...menu.querySelectorAll<HTMLElement>("a")];
     const first = focusables[0];
     const last = focusables[focusables.length - 1];
 
