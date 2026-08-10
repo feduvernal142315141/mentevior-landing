@@ -4,6 +4,9 @@
 // El menú mobile es pantalla completa, sin adornos: links grandes, divisores
 // finos y las acciones al fondo.
 
+import { Image } from "astro:assets";
+import emblem from "../assets/logo-emblem.png";
+
 const links = [
   { label: "Product", href: "#product" },
   { label: "Features", href: "#features" },
@@ -14,9 +17,9 @@ const links = [
 
 <header class="site-nav enter-fade fixed inset-x-0 top-0 z-50" id="site-nav" style="--d: 0ms">
   <div class="nav-inner">
-    <a href="/" class="flex items-center gap-2.5" aria-label="MenteVior home">
-      <img src="/logoMenteVior.png" alt="" class="h-9 w-9 object-contain" width="36" height="36" />
-      <span class="text-[19px] font-bold tracking-[-0.02em]">
+    <a href="/" class="flex items-center gap-3" aria-label="MenteVior home">
+      <Image src={emblem} alt="" width={44} densities={[1, 2]} class="h-11 w-11 object-contain" />
+      <span class="text-[22px] font-bold tracking-[-0.02em]">
         <span class="text-indigo-900">Mente</span><span class="text-brand-400">Vior</span>
       </span>
     </a>
