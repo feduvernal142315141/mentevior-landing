@@ -1,6 +1,10 @@
 ---
-// Tres filas alternadas texto/visual (§4.5). Cada visual es un mockup del
-// producto real en HTML/CSS/SVG — sin capturas, sin fotos.
+// Tres filas alternadas texto/visual (§4.5). Las filas 2 y 3 muestran CAPTURAS
+// REALES del producto (datos de prueba); la 1 es un mockup dibujado hasta tener
+// captura de session note.
+import { Picture } from "astro:assets";
+import dataCollectionShot from "../assets/shot-datacollection.png";
+import authorizationShot from "../assets/shot-authorization.png";
 
 const rows = [
   {
@@ -117,86 +121,34 @@ const iconPaths: Record<string, string> = {
           )}
 
           {index === 1 && (
-            <div class="feature-card mx-auto max-w-[560px] !rounded-[24px] p-6" style="box-shadow: var(--shadow-float)">
-              <div class="flex items-center gap-2">
-                {["Maladaptive (13)", "Replacement (14)", "Caregiver (3)"].map((tab, t) => (
-                  <span
-                    class:list={[
-                      "rounded-full px-3 py-1.5 text-[10.5px] font-semibold",
-                      t === 0
-                        ? "bg-gradient-to-r from-brand-500 to-brand-400 text-white"
-                        : "border border-line text-ink-muted",
-                    ]}
-                  >
-                    {tab}
-                  </span>
-                ))}
-              </div>
-
-              <div class="mt-4 grid grid-cols-[1fr_auto] gap-4">
-                <div class="overflow-hidden rounded-2xl border border-line">
-                  <div class="grid grid-cols-5 border-b border-line bg-page-alt px-3 py-2 text-[9.5px] font-semibold uppercase tracking-wider text-ink-muted">
-                    <span>Day</span><span>1</span><span>2</span><span>3</span><span>4</span>
-                  </div>
-                  {[
-                    ["Mon", 4, 2, 3, 1],
-                    ["Tue", 3, 3, 1, 2],
-                    ["Wed", 5, 1, 2, 0],
-                    ["Thu", 2, 2, 1, 1],
-                  ].map((r) => (
-                    <div class="grid grid-cols-5 border-b border-line px-3 py-2 text-[11px] tabular-nums last:border-0">
-                      <span class="font-medium text-ink-secondary">{r[0]}</span>
-                      {r.slice(1).map((v) => <span class="text-ink-muted">{v}</span>)}
-                    </div>
-                  ))}
-                </div>
-
-                <div class="flex w-[150px] flex-col justify-between rounded-2xl border border-line bg-page p-3">
-                  <p class="text-[9.5px] font-semibold uppercase tracking-wider text-ink-muted">Trend</p>
-                  <svg viewBox="0 0 130 80" class="w-full" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="ds-fill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#037ECC" stop-opacity="0.16" />
-                        <stop offset="100%" stop-color="#037ECC" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M0 58 C 20 52, 35 62, 50 48 S 85 26, 100 32 S 120 18, 130 20 L 130 80 L 0 80 Z" fill="url(#ds-fill)" />
-                    <path d="M0 58 C 20 52, 35 62, 50 48 S 85 26, 100 32 S 120 18, 130 20" fill="none" stroke="#037ECC" stroke-width="2.2" stroke-linecap="round" />
-                  </svg>
-                  <p class="text-[10px] font-medium text-[hsl(142_60%_32%)]">↓ 38% this month</p>
-                </div>
-              </div>
+            <div class="feature-card mx-auto max-w-[560px] !rounded-[24px] p-2" style="box-shadow: var(--shadow-float)">
+              <Picture
+                src={dataCollectionShot}
+                formats={["avif"]}
+          fallbackFormat="webp"
+                widths={[560, 1120, 1520]}
+                sizes="(min-width: 1024px) 545px, 92vw"
+                alt="MenteVior datasheet with daily occurrence counts and the live behavior chart"
+                loading="lazy"
+                decoding="async"
+                class="w-full rounded-[18px] border border-line"
+              />
             </div>
           )}
 
           {index === 2 && (
-            <div class="feature-card mx-auto max-w-[480px] !rounded-[24px] p-6" style="box-shadow: var(--shadow-float)">
-              <p class="text-[15px] font-semibold">Authorization usage</p>
-              <div class="mt-4 space-y-4">
-                {[
-                  { name: "M. Rivas · 97153", pct: 94, tone: "var(--color-crit)" },
-                  { name: "S. Delgado · 97155", pct: 83, tone: "var(--color-warn)" },
-                  { name: "T. Herrera · 97153", pct: 61, tone: "var(--color-ok)" },
-                ].map((row) => (
-                  <div>
-                    <div class="flex items-baseline justify-between">
-                      <span class="text-[12.5px] font-medium text-ink-secondary">{row.name}</span>
-                      <span class="text-[12.5px] font-semibold tabular-nums">{row.pct}%</span>
-                    </div>
-                    <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-[hsl(240_15%_93%)]">
-                      <div class="h-full rounded-full" style={`width:${row.pct}%; background:${row.tone}`}></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[hsl(38_80%_82%)] bg-[hsl(38_90%_96%)] px-4 py-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="hsl(38 85% 40%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
-                </svg>
-                <p class="text-[12px] text-[hsl(38_70%_28%)]">
-                  <strong>Prior Auth #A-1024</strong> expires in 5 days
-                </p>
-              </div>
+            <div class="feature-card mx-auto max-w-[440px] !rounded-[24px] p-2" style="box-shadow: var(--shadow-float)">
+              <Picture
+                src={authorizationShot}
+                formats={["avif"]}
+          fallbackFormat="webp"
+                widths={[440, 880]}
+                sizes="(min-width: 1024px) 425px, 88vw"
+                alt="Authorization usage panel with per-client unit consumption and risk levels"
+                loading="lazy"
+                decoding="async"
+                class="w-full rounded-[18px] border border-line"
+              />
             </div>
           )}
         </div>

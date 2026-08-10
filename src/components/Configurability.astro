@@ -1,22 +1,9 @@
 ---
-// La cuña competitiva (§4.7): configurabilidad por organización. Concreta y
-// segura de sí misma, sin nombrar a nadie.
-
-const modules = ["Clients", "Session Note", "Scheduling", "Billing", "Data Collection"];
-const roles = [
-  { name: "Clinical Director", perms: [3, 3, 3, 3, 3] },
-  { name: "BCBA", perms: [3, 3, 2, 0, 3] },
-  { name: "RBT", perms: [1, 2, 1, 0, 2] },
-  { name: "Billing Analyst", perms: [1, 1, 0, 3, 0] },
-];
-// 0 = sin acceso · 1 = ver · 2 = editar · 3 = total
-const permStyle = [
-  "bg-[hsl(240_15%_94%)]",
-  "bg-[rgba(3,126,204,0.18)]",
-  "bg-[rgba(3,126,204,0.45)]",
-  "bg-brand-500",
-];
-const permLabel = ["No access", "View", "Edit", "Full"];
+// La cuña competitiva (§4.7): configurabilidad por organización. El visual es
+// una CAPTURA REAL de la pantalla de roles — la matriz de permisos por módulo
+// y por acción existe, no hay que dibujarla.
+import { Picture } from "astro:assets";
+import rolesShot from "../assets/shot-roles.png";
 ---
 
 <section class="py-[72px] lg:py-[128px]">
@@ -47,36 +34,20 @@ const permLabel = ["No access", "View", "Edit", "Full"];
       </ul>
     </div>
 
-    <!-- Matriz de permisos -->
-    <div class="reveal" style="--reveal-delay: 120ms" aria-hidden="true">
-      <div class="feature-card mx-auto max-w-[520px] !rounded-[24px] p-6" style="box-shadow: var(--shadow-float)">
-        <p class="text-[15px] font-semibold">Role permissions</p>
-        <div class="mt-4 overflow-hidden rounded-2xl border border-line">
-          <div class="grid grid-cols-[1.4fr_repeat(5,1fr)] items-center border-b border-line bg-page-alt px-3 py-2.5">
-            <span class="text-[9.5px] font-semibold uppercase tracking-wider text-ink-muted">Role</span>
-            {modules.map((m) => (
-              <span class="truncate px-1 text-center text-[9px] font-semibold uppercase tracking-wide text-ink-muted">{m}</span>
-            ))}
-          </div>
-          {roles.map((role) => (
-            <div class="grid grid-cols-[1.4fr_repeat(5,1fr)] items-center border-b border-line px-3 py-3 last:border-0">
-              <span class="text-[12px] font-medium text-ink-secondary">{role.name}</span>
-              {role.perms.map((p) => (
-                <span class="flex justify-center">
-                  <span class:list={["h-4 w-4 rounded-md", permStyle[p]]} title={permLabel[p]}></span>
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div class="mt-3.5 flex items-center justify-end gap-4">
-          {permLabel.map((label, i) => (
-            <span class="flex items-center gap-1.5 text-[10px] text-ink-muted">
-              <span class:list={["h-2.5 w-2.5 rounded", permStyle[i]]}></span>
-              {label}
-            </span>
-          ))}
-        </div>
+    <!-- Matriz de permisos: captura real de Edit Role -->
+    <div class="reveal" style="--reveal-delay: 120ms">
+      <div class="feature-card mx-auto max-w-[520px] !rounded-[24px] p-2" style="box-shadow: var(--shadow-float)">
+        <Picture
+          src={rolesShot}
+          formats={["avif"]}
+          fallbackFormat="webp"
+          widths={[520, 1040]}
+          sizes="(min-width: 1024px) 505px, 90vw"
+          alt="Role editor with per-module permissions: read, create, edit, delete and block for each system module"
+          loading="lazy"
+          decoding="async"
+          class="w-full rounded-[18px] border border-line"
+        />
       </div>
     </div>
   </div>

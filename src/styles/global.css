@@ -738,29 +738,6 @@
     }
   }
 
-  /* Trazo del gráfico: se dibuja una vez al entrar y queda quieto */
-  .draw-line {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: draw-line 900ms 780ms var(--ease-standard) forwards;
-  }
-
-  .draw-fill {
-    opacity: 0;
-    animation: hero-fade 520ms 1250ms var(--ease-standard) forwards;
-  }
-
-  .draw-dot {
-    opacity: 0;
-    animation: hero-fade 300ms 1500ms var(--ease-standard) forwards;
-  }
-
-  @keyframes draw-line {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
   /* =========================================================
      SCROLL REVEAL (§6) — para las secciones bajo el fold
      ========================================================= */
@@ -803,17 +780,6 @@
   .float-a,
   .float-b,
   .badge-dot::before {
-    animation: none;
-  }
-
-  .draw-line {
-    stroke-dashoffset: 0;
-    animation: none;
-  }
-
-  .draw-fill,
-  .draw-dot {
-    opacity: 1;
     animation: none;
   }
 

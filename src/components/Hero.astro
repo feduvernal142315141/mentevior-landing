@@ -1,8 +1,10 @@
 ---
-// El visual es un mockup del producto en HTML/CSS/SVG puro — sin fotos.
-// Composición: el texto vende claridad (limpio, sin efectos), el showcase
-// vende tecnología (profundidad, luz, tilt). La iluminación es ambiental:
-// se siente, no se ve.
+// El visual del showcase es una CAPTURA REAL del producto (dashboard en modo
+// mock: datos ficticios diseñados para demos). El frame del navegador, la luz
+// y las cards flotantes son síntesis — producto real + capas dibujadas, el
+// patrón de Linear/Stripe. El texto vende claridad; el showcase, tecnología.
+import { Picture } from "astro:assets";
+import dashboardShot from "../assets/shot-dashboard.png";
 ---
 
 <section
@@ -105,70 +107,21 @@
           <span
             class="ml-3 flex h-6 flex-1 items-center rounded-md bg-page-alt px-3 text-[10px] text-ink-muted"
           >
-            app.mentevior.com / data-collection
+            app.mentevior.com / dashboard
           </span>
         </div>
 
-        <div class="rounded-[18px] border border-line bg-page p-5">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-eyebrow !text-[10px] text-ink-muted">Data Collection</p>
-              <p class="mt-1 text-[15px] font-semibold">Property Destruction — Frequency</p>
-            </div>
-            <span
-              class="rounded-full bg-[rgba(3,126,204,0.08)] px-2.5 py-1 text-[10.5px] font-semibold text-brand-500"
-            >
-              May 2026
-            </span>
-          </div>
-
-          <!-- Chart: la línea se dibuja una vez al cargar, después queda quieta -->
-          <svg viewBox="0 0 460 170" class="mt-4 w-full" role="img">
-            <defs>
-              <linearGradient id="hero-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#037ECC" stop-opacity="0.16"></stop>
-                <stop offset="100%" stop-color="#037ECC" stop-opacity="0"></stop>
-              </linearGradient>
-            </defs>
-            {[0, 1, 2, 3].map((i) => (
-              <line
-                x1="0"
-                y1={20 + i * 40}
-                x2="460"
-                y2={20 + i * 40}
-                stroke="hsl(240 20% 93%)"
-                stroke-dasharray="3 3"
-              />
-            ))}
-            <path
-              class="draw-fill"
-              d="M0 118 C 30 112, 50 96, 80 100 S 140 122, 170 108 S 230 62, 260 70 S 320 96, 350 78 S 420 34, 460 40 L 460 170 L 0 170 Z"
-              fill="url(#hero-fill)"
-            ></path>
-            <path
-              class="draw-line"
-              pathLength="1"
-              d="M0 118 C 30 112, 50 96, 80 100 S 140 122, 170 108 S 230 62, 260 70 S 320 96, 350 78 S 420 34, 460 40"
-              fill="none"
-              stroke="#037ECC"
-              stroke-width="2.5"
-              stroke-linecap="round"
-            ></path>
-            <circle
-              class="draw-dot"
-              cx="350"
-              cy="78"
-              r="4.5"
-              fill="#fff"
-              stroke="#037ECC"
-              stroke-width="2.5"
-            ></circle>
-          </svg>
-
-          <div class="mt-3 flex items-center justify-between text-[10px] text-ink-muted">
-            <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
-          </div>
-        </div>
+        <Picture
+          src={dashboardShot}
+          formats={["avif"]}
+          fallbackFormat="webp"
+          widths={[560, 1120, 1412]}
+          sizes="(min-width: 1024px) 520px, 92vw"
+          alt="MenteVior dashboard showing weekly sessions, notes pending signature, authorization usage and expiring items"
+          loading="eager"
+          fetchpriority="high"
+          class="w-full rounded-[18px] border border-line"
+        />
       </div>
 
       <!-- Cards flotantes: parallax en el contenedor, float en el interno.
@@ -181,17 +134,15 @@
           class="float-a w-[190px] rotate-[-2deg] rounded-[20px] border border-line bg-white/95 p-4 backdrop-blur-sm"
           style="box-shadow: var(--shadow-float)"
         >
-          <p class="text-eyebrow !text-[9.5px] text-ink-muted">Sessions this week</p>
-          <div class="mt-1.5 flex items-end justify-between">
-            <span class="text-[26px] font-semibold leading-none tabular-nums">128</span>
-            <svg viewBox="0 0 64 24" class="h-6 w-16" aria-hidden="true">
-              <path
-                d="M0 18 L 10 15 L 20 17 L 30 10 L 40 12 L 52 6 L 64 8"
-                fill="none"
-                stroke="#037ECC"
-                stroke-width="2"
-                stroke-linecap="round"></path>
+          <p class="text-eyebrow !text-[9.5px] text-ink-muted">Session Note · 97155</p>
+          <div class="mt-1.5 flex items-center gap-2">
+            <svg viewBox="0 0 90 22" class="h-5 w-16 text-ink-secondary" aria-hidden="true">
+              <path d="M2 16 C 12 4, 18 20, 28 12 S 44 4, 52 12 S 70 20, 88 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
             </svg>
+            <span class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2 py-0.5 text-[10px] font-semibold text-[hsl(142_60%_30%)]">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              Signed
+            </span>
           </div>
         </div>
       </div>
