@@ -1,0 +1,63 @@
+---
+// Sección oscura sobre índigo (§4.8). SOLO la afirmación HIPAA y seguridad
+// genérica: nada de sellos ni certificaciones de terceros hasta que se
+// confirmen. Sobre índigo, texto blanco o #5AC8FA — nunca #037ECC (§8).
+
+const cards = [
+  {
+    icon: "M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z",
+    title: "HIPAA compliant",
+    body: "Built from the ground up for protected health information, with the safeguards HIPAA requires.",
+  },
+  {
+    icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+    title: "Role-based access control",
+    body: "Permissions per module and per action. Everyone sees exactly what their role requires — nothing more.",
+  },
+  {
+    icon: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-12 0V7a5 5 0 0 1 10 0v4",
+    title: "Encrypted in transit and at rest",
+    body: "Patient data is encrypted on the wire and on disk, with company-scoped isolation across tenants.",
+  },
+  {
+    icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
+    title: "Full audit trail",
+    body: "Every record keeps its history — who created it, who changed it, and when.",
+  },
+];
+---
+
+<section class="relative overflow-hidden bg-indigo-900 py-[72px] lg:py-[128px]" id="security">
+  <div
+    class="pointer-events-none absolute -right-32 -top-40 h-[520px] w-[520px] rounded-full opacity-100"
+    style="background: radial-gradient(circle, rgba(90,200,250,0.12), transparent 65%)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
+    <div class="mx-auto max-w-[720px] text-center">
+      <span class="text-eyebrow reveal inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-brand-300">
+        Security
+      </span>
+      <h2 class="text-h2 reveal mt-5 text-white" style="--reveal-delay: 70ms">
+        Built for the data you're responsible for
+      </h2>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {cards.map((card, i) => (
+        <div
+          class="reveal rounded-[20px] border border-white/10 bg-white/5 p-7"
+          style={`--reveal-delay: ${i * 70}ms`}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5AC8FA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d={card.icon} />
+          </svg>
+          <h3 class="mt-4 text-[16.5px] font-semibold text-white">{card.title}</h3>
+          <p class="mt-2 text-[13.5px] leading-relaxed text-white/65">{card.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

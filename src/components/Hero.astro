@@ -1,0 +1,138 @@
+---
+// El visual del hero es un mockup estilizado del producto real —la pantalla de
+// Data Collection con su gráfico— construido en HTML/CSS/SVG puro. Nada de
+// fotos de stock: el producto ES el argumento.
+---
+
+<section class="surface-signature overflow-hidden pt-[136px] pb-[72px] md:pt-[160px] lg:pt-[184px] lg:pb-[128px]" id="product">
+  <div class="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-14 px-6 md:px-8 lg:grid-cols-[55fr_45fr] lg:gap-12 lg:px-12">
+    <!-- ── Texto ── -->
+    <div>
+      <span class="eyebrow-pill text-eyebrow reveal">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 14c1.5-1.5 2-3.5 2-5a7 7 0 0 0-14 0M5 10c-1.5 1.5-2 3.5-2 5a7 7 0 0 0 14 0" />
+        </svg>
+        Built for ABA practices
+      </span>
+
+      <h1 class="text-display reveal mt-6" style="--reveal-delay: 70ms">
+        Every part of your ABA practice, finally
+        <span class="text-gradient-brand">in one place</span>
+      </h1>
+
+      <p class="text-body-lg reveal mt-6 max-w-[34rem] text-ink-muted" style="--reveal-delay: 140ms">
+        Data collection, session notes, supervision, authorizations and billing —
+        connected end to end, so your team documents once and everything else follows.
+      </p>
+
+      <div class="reveal mt-9 flex flex-wrap items-center gap-3.5" style="--reveal-delay: 210ms">
+        <a href="#demo" class="btn-primary">Request a demo</a>
+        <a href="#features" class="btn-ghost">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5.14v13.72L19 12 8 5.14Z" />
+          </svg>
+          See how it works
+        </a>
+      </div>
+
+      <p class="reveal mt-7 text-[14px] text-ink-muted" style="--reveal-delay: 280ms">
+        HIPAA compliant&ensp;·&ensp;Role-based access&ensp;·&ensp;Built with BCBAs
+      </p>
+    </div>
+
+    <!-- ── Mockup de producto ── -->
+    <div class="reveal relative mx-auto w-full max-w-[560px] lg:max-w-none" style="--reveal-delay: 200ms" aria-hidden="true">
+      <!-- Glow -->
+      <div
+        class="absolute inset-0 -m-12"
+        style="background: radial-gradient(ellipse 60% 55% at 55% 45%, rgba(3,126,204,0.08), transparent 70%)"
+      >
+      </div>
+
+      <!-- Browser frame -->
+      <div
+        class="relative rounded-[24px] border border-line bg-white p-1.5"
+        style="box-shadow: var(--shadow-float)"
+      >
+        <div class="flex items-center gap-1.5 px-3 py-2.5">
+          <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
+          <span class="ml-3 flex h-6 flex-1 items-center rounded-md bg-page-alt px-3 text-[10px] text-ink-muted">
+            app.mentevior.com / data-collection
+          </span>
+        </div>
+
+        <div class="rounded-[18px] border border-line bg-page p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-eyebrow !text-[10px] text-ink-muted">Data Collection</p>
+              <p class="mt-1 text-[15px] font-semibold">Property Destruction — Frequency</p>
+            </div>
+            <span class="rounded-full bg-[rgba(3,126,204,0.08)] px-2.5 py-1 text-[10.5px] font-semibold text-brand-500">
+              May 2026
+            </span>
+          </div>
+
+          <!-- Chart -->
+          <svg viewBox="0 0 460 170" class="mt-4 w-full" role="img">
+            <defs>
+              <linearGradient id="hero-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#037ECC" stop-opacity="0.16" />
+                <stop offset="100%" stop-color="#037ECC" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            {[0, 1, 2, 3].map((i) => (
+              <line x1="0" y1={20 + i * 40} x2="460" y2={20 + i * 40} stroke="hsl(240 20% 93%)" stroke-dasharray="3 3" />
+            ))}
+            <path
+              d="M0 118 C 30 112, 50 96, 80 100 S 140 122, 170 108 S 230 62, 260 70 S 320 96, 350 78 S 420 34, 460 40 L 460 170 L 0 170 Z"
+              fill="url(#hero-fill)"
+            />
+            <path
+              d="M0 118 C 30 112, 50 96, 80 100 S 140 122, 170 108 S 230 62, 260 70 S 320 96, 350 78 S 420 34, 460 40"
+              fill="none"
+              stroke="#037ECC"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <circle cx="350" cy="78" r="4.5" fill="#fff" stroke="#037ECC" stroke-width="2.5" />
+          </svg>
+
+          <div class="mt-3 flex items-center justify-between text-[10px] text-ink-muted">
+            <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat tile flotante -->
+      <div
+        class="absolute -left-4 -bottom-9 w-[190px] rotate-[-2deg] rounded-[20px] border border-line bg-white p-4 sm:-left-8"
+        style="box-shadow: var(--shadow-float)"
+      >
+        <p class="text-eyebrow !text-[9.5px] text-ink-muted">Sessions this week</p>
+        <div class="mt-1.5 flex items-end justify-between">
+          <span class="text-[26px] font-semibold leading-none tabular-nums">128</span>
+          <svg viewBox="0 0 64 24" class="h-6 w-16" aria-hidden="true">
+            <path d="M0 18 L 10 15 L 20 17 L 30 10 L 40 12 L 52 6 L 64 8" fill="none" stroke="#037ECC" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Compliance badge flotante -->
+      <div
+        class="absolute -right-3 -top-7 w-[195px] rotate-[2deg] rounded-[20px] border border-line bg-white p-4 sm:-right-6"
+        style="box-shadow: var(--shadow-float)"
+      >
+        <p class="text-eyebrow !text-[9.5px] text-ink-muted">Supervision</p>
+        <div class="mt-1.5 flex items-center gap-2">
+          <span class="text-[22px] font-semibold leading-none tabular-nums">12.4%</span>
+          <span class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2 py-0.5 text-[10px] font-semibold text-[hsl(142_60%_30%)]">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+            Met
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

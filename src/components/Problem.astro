@@ -1,0 +1,31 @@
+---
+// Los números quedan como "——" a propósito: no se fabrican estadísticas (§4.4).
+const costs = [
+  { stat: "——", label: "hours a week re-entering the same data" },
+  { stat: "——", label: "claims denied over documentation gaps" },
+  { stat: "——", label: "authorizations expiring before anyone notices" },
+];
+---
+
+<section class="py-[72px] lg:py-[128px]">
+  <div class="mx-auto max-w-[720px] px-6 text-center md:px-8">
+    <span class="eyebrow-pill text-eyebrow reveal">The real cost of fragmentation</span>
+    <h2 class="text-h2 reveal mt-5" style="--reveal-delay: 70ms">
+      Five systems. One clinician. Nothing reconciles.
+    </h2>
+    <p class="text-body-lg reveal mx-auto mt-5 max-w-[62ch] text-ink-muted" style="--reveal-delay: 140ms">
+      Behavior data in one tool. Session notes in another. Authorizations in a
+      spreadsheet, billing somewhere else. The errors don't show up when they happen —
+      they surface at the claim, weeks later.
+    </p>
+  </div>
+
+  <div class="mx-auto mt-14 grid max-w-[1000px] grid-cols-1 gap-5 px-6 sm:grid-cols-3 md:px-8">
+    {costs.map((item, i) => (
+      <div class="feature-card reveal p-6 text-center" style={`--reveal-delay: ${i * 70}ms`}>
+        <p class="text-[30px] font-semibold tabular-nums text-ink-muted/60">{item.stat}</p>
+        <p class="mt-2 text-[14px] leading-relaxed text-ink-muted">{item.label}</p>
+      </div>
+    ))}
+  </div>
+</section>

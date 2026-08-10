@@ -1,0 +1,16 @@
+---
+// Placeholders neutros a propósito: no se inventan clínicas ni logos (§4.3).
+// Cuando haya clientes reales, cada slot se reemplaza por su logo en escala
+// de grises a 24px de alto.
+---
+
+<section class="border-y border-line bg-page-alt">
+  <div class="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-10 gap-y-4 px-6 py-7 md:px-8 lg:px-12">
+    <p class="text-[13px] font-medium text-ink-muted">Trusted by ABA teams across the U.S.</p>
+    <div class="flex flex-1 flex-wrap items-center gap-x-10 gap-y-3 opacity-40" aria-hidden="true">
+      {[92, 76, 104, 84, 96].map((w) => (
+        <span class="h-6 rounded-md bg-[hsl(240_10%_62%)]" style={`width:${w}px`}></span>
+      ))}
+    </div>
+  </div>
+</section>

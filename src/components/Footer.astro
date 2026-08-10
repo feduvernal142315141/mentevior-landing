@@ -1,0 +1,69 @@
+---
+const columns = [
+  {
+    title: "Product",
+    links: [
+      { label: "Features", href: "#features" },
+      { label: "Security", href: "#security" },
+      { label: "Pricing", href: "#pricing" },
+      { label: "Request a demo", href: "#demo" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "#" },
+      { label: "Contact", href: "mailto:hello@mentevior.com" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy Policy", href: "#" },
+      { label: "Terms of Service", href: "#" },
+      { label: "HIPAA Notice", href: "#" },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-indigo-950 pt-16 pb-8">
+  <div class="mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+      <div>
+        <a href="/" class="flex items-center gap-2.5" aria-label="MenteVior home">
+          <img src="/logoMenteVior.png" alt="" class="h-9 w-9 rounded-full bg-white object-contain p-0.5" width="36" height="36" />
+          <span class="text-[19px] font-bold tracking-[-0.02em] text-white">
+            Mente<span class="text-brand-300">Vior</span>
+          </span>
+        </a>
+        <p class="mt-4 max-w-[32ch] text-[13.5px] leading-relaxed text-white/55">
+          All-in-one practice management and clinical documentation for ABA therapy
+          practices.
+        </p>
+      </div>
+
+      {columns.map((col) => (
+        <nav aria-label={col.title}>
+          <p class="text-eyebrow !text-[11px] text-white/40">{col.title}</p>
+          <ul class="mt-4 space-y-2.5">
+            {col.links.map((link) => (
+              <li>
+                <a href={link.href} class="text-[14px] text-white/65 transition-colors hover:text-white">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+
+    <div class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/[0.08] pt-7 sm:flex-row">
+      <p class="text-[12.5px] text-white/40">© {year} MenteVior. All rights reserved.</p>
+      <p class="text-[12.5px] text-white/40">Made for the ABA community</p>
+    </div>
+  </div>
+</footer>

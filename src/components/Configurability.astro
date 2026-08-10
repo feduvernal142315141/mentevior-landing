@@ -1,0 +1,83 @@
+---
+// La cuña competitiva (§4.7): configurabilidad por organización. Concreta y
+// segura de sí misma, sin nombrar a nadie.
+
+const modules = ["Clients", "Session Note", "Scheduling", "Billing", "Data Collection"];
+const roles = [
+  { name: "Clinical Director", perms: [3, 3, 3, 3, 3] },
+  { name: "BCBA", perms: [3, 3, 2, 0, 3] },
+  { name: "RBT", perms: [1, 2, 1, 0, 2] },
+  { name: "Billing Analyst", perms: [1, 1, 0, 3, 0] },
+];
+// 0 = sin acceso · 1 = ver · 2 = editar · 3 = total
+const permStyle = [
+  "bg-[hsl(240_15%_94%)]",
+  "bg-[rgba(3,126,204,0.18)]",
+  "bg-[rgba(3,126,204,0.45)]",
+  "bg-brand-500",
+];
+const permLabel = ["No access", "View", "Edit", "Full"];
+---
+
+<section class="py-[72px] lg:py-[128px]">
+  <div class="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 px-6 md:px-8 lg:grid-cols-2 lg:gap-16 lg:px-12">
+    <div class="reveal">
+      <span class="eyebrow-pill text-eyebrow">Built to fit</span>
+      <h2 class="text-h2 mt-5">Configured to your clinic, not the other way around</h2>
+      <p class="mt-5 max-w-[62ch] leading-relaxed text-ink-muted">
+        Service plans, data collection methods, document templates and role permissions
+        are configured per organization. Your RBTs see exactly what they need. Your
+        billing analyst never touches a clinical note. Your templates match your payer
+        requirements — because you defined them.
+      </p>
+      <ul class="mt-8 space-y-3.5">
+        {[
+          "Service plans and billing codes defined by your company",
+          "Data collection methods that match your clinical approach",
+          "Document templates per report type",
+          "Permissions per module and per action — not all-or-nothing",
+        ].map((line) => (
+          <li class="flex items-start gap-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#037ECC" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <span class="text-[15px] text-ink-secondary">{line}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Matriz de permisos -->
+    <div class="reveal" style="--reveal-delay: 120ms" aria-hidden="true">
+      <div class="feature-card mx-auto max-w-[520px] !rounded-[24px] p-6" style="box-shadow: var(--shadow-float)">
+        <p class="text-[15px] font-semibold">Role permissions</p>
+        <div class="mt-4 overflow-hidden rounded-2xl border border-line">
+          <div class="grid grid-cols-[1.4fr_repeat(5,1fr)] items-center border-b border-line bg-page-alt px-3 py-2.5">
+            <span class="text-[9.5px] font-semibold uppercase tracking-wider text-ink-muted">Role</span>
+            {modules.map((m) => (
+              <span class="truncate px-1 text-center text-[9px] font-semibold uppercase tracking-wide text-ink-muted">{m}</span>
+            ))}
+          </div>
+          {roles.map((role) => (
+            <div class="grid grid-cols-[1.4fr_repeat(5,1fr)] items-center border-b border-line px-3 py-3 last:border-0">
+              <span class="text-[12px] font-medium text-ink-secondary">{role.name}</span>
+              {role.perms.map((p) => (
+                <span class="flex justify-center">
+                  <span class:list={["h-4 w-4 rounded-md", permStyle[p]]} title={permLabel[p]}></span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div class="mt-3.5 flex items-center justify-end gap-4">
+          {permLabel.map((label, i) => (
+            <span class="flex items-center gap-1.5 text-[10px] text-ink-muted">
+              <span class:list={["h-2.5 w-2.5 rounded", permStyle[i]]}></span>
+              {label}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
