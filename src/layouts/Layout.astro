@@ -12,6 +12,29 @@ const {
   description =
     "Data collection, session notes, supervision, authorizations and billing for ABA practices — connected end to end in one HIPAA-compliant platform.",
 } = Astro.props;
+
+const site = Astro.site ?? new URL("https://mentevior.com");
+const canonical = new URL(Astro.url.pathname, site);
+const ogImage = new URL("/og.png", site);
+
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "MenteVior",
+  url: site.href,
+  logo: new URL("/logoMenteVior.png", site).href,
+  email: "hello@mentevior.com",
+};
+
+const appLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "MenteVior",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description,
+  url: site.href,
+};
 ---
 
 <!doctype html>
@@ -24,15 +47,89 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="theme-color" content="#037ecc" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MenteVior" />
+    <meta property="og:url" content={canonical.href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/logoMenteVior.png" />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage.href} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(orgLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(appLd)} />
+
+    <!-- Antes de pintar: habilita el motion condicionado a JS + sin reduced-motion.
+         Sin JS (o con reduced-motion) los medidores quedan en su estado final. -->
+    <script is:inline>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-motion");
+      }
+    </script>
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
     <slot />
+
+    <!-- Sin JS los .reveal quedarían en opacity:0; este fallback los muestra. -->
+    <noscript>
+      <style>
+        .reveal { opacity: 1 !important; transform: none !important; }
+      </style>
+    </noscript>
+
+    <script>
+      // Calendly popup con carga perezosa: los enlaces [data-calendly] abren el
+      // widget en la página; si el script externo falla, el href navega normal.
+      const CALENDLY_ASSETS = {
+        js: "https://assets.calendly.com/assets/external/widget.js",
+        css: "https://assets.calendly.com/assets/external/widget.css",
+      };
+      let calendlyLoading: Promise<void> | null = null;
+
+      const loadCalendly = () => {
+        calendlyLoading ??= new Promise<void>((resolve, reject) => {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = CALENDLY_ASSETS.css;
+          document.head.appendChild(link);
+
+          const script = document.createElement("script");
+          script.src = CALENDLY_ASSETS.js;
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error("Calendly failed to load"));
+          document.head.appendChild(script);
+        });
+        return calendlyLoading;
+      };
+
+      document.querySelectorAll<HTMLAnchorElement>("a[data-calendly]").forEach((a) => {
+        // Precalentar al pasar el cursor para que el popup abra al instante
+        a.addEventListener("mouseenter", () => loadCalendly().catch(() => {}), { once: true });
+        a.addEventListener("click", (e) => {
+          const w = window as typeof window & {
+            Calendly?: { initPopupWidget: (opts: { url: string }) => void };
+          };
+          if (w.Calendly) {
+            e.preventDefault();
+            w.Calendly.initPopupWidget({ url: a.href });
+            return;
+          }
+          e.preventDefault();
+          loadCalendly()
+            .then(() => w.Calendly?.initPopupWidget({ url: a.href }))
+            .catch(() => window.open(a.href, "_blank", "noopener"));
+        });
+      });
+    </script>
 
     <script>
       // Reveal on scroll: puro IntersectionObserver, sin framework.
@@ -49,6 +146,38 @@ const {
         { threshold: 0.15 },
       );
       document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+      // Count-up para [data-count] al entrar en viewport. El HTML trae el valor
+      // final, así que sin JS (o con reduced-motion) no hay animación ni flash.
+      if (document.documentElement.classList.contains("js-motion")) {
+        const runCount = (el: HTMLElement) => {
+          const raw = el.dataset.count ?? "0";
+          const target = parseFloat(raw);
+          const decimals = (raw.split(".")[1] || "").length;
+          const duration = 900;
+          const t0 = performance.now();
+          const tick = (t: number) => {
+            const p = Math.min((t - t0) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = (target * eased).toFixed(decimals);
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        };
+
+        const counters = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                counters.unobserve(entry.target);
+                runCount(entry.target as HTMLElement);
+              }
+            }
+          },
+          { threshold: 0.6 },
+        );
+        document.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => counters.observe(el));
+      }
     </script>
   </body>
 </html>
