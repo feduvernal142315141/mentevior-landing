@@ -705,7 +705,9 @@
     display: flex;
     flex-direction: column;
     padding-top: 92px;
-    background: rgba(255, 255, 255, 0.88);
+    /* Casi opaco a propósito: el menú cubre secciones índigo oscuras y el
+       contenido de atrás no debe leerse. El blur solo aporta el 2-3% restante */
+    background: linear-gradient(180deg, hsl(240 20% 99% / 0.97), hsl(240 18% 97% / 0.985));
     backdrop-filter: blur(28px) saturate(1.5);
     -webkit-backdrop-filter: blur(28px) saturate(1.5);
     clip-path: inset(0 0 100% 0);
@@ -1355,6 +1357,19 @@
           rgba(3, 126, 204, 0.25)
         )
         border-box;
+  }
+
+  /* Sin blur no hay vidrio que valga: el menú y el panel del nav van opacos */
+  .mobile-menu {
+    background: linear-gradient(180deg, hsl(240 20% 99%), hsl(240 18% 97%));
+  }
+
+  .nav-panel {
+    background: #fff;
+  }
+
+  .site-nav.is-scrolled {
+    background: rgba(255, 255, 255, 0.97);
   }
 }
 
