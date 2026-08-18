@@ -1,0 +1,26 @@
+---
+// Chip de éxito (Signed / Met) — el mismo en hero, supervision y mockups.
+// `class` permite ajustar tamaño de texto/padding en contextos compactos.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={["status-chip", className]}>
+  <svg
+    width="9"
+    height="9"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M20 6 9 17l-5-5" />
+  </svg>
+  <slot />
+</span>

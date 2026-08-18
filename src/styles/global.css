@@ -37,6 +37,16 @@
   --color-warn: hsl(38 92% 50%);
   --color-crit: hsl(0 72% 51%);
 
+  /* Success chips (Signed/Met) — una sola tríada, no 4 luminosidades ad-hoc */
+  --color-ok-strong: hsl(142 60% 30%);
+  --color-ok-soft: hsl(142 60% 96%);
+  --color-ok-line: hsl(142 50% 82%);
+
+  /* Radii — un solo lenguaje de curvatura en toda la página */
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-frame: 24px;
+
   /* Sombras */
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
   --shadow-card-hover: 0 8px 24px rgba(3, 126, 204, 0.12);
@@ -79,7 +89,8 @@
   }
 
   /* El nav es fixed: los anchors necesitan margen para no quedar tapados */
-  section[id] {
+  section[id],
+  div[id] {
     scroll-margin-top: 96px;
   }
 
@@ -123,6 +134,22 @@
   line-height: 1.2;
 }
 
+/* Escala pequeña — reemplaza los tamaños arbitrarios (13–15px) dispersos */
+@utility text-body-sm {
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+@utility text-caption {
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+@utility text-micro {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 /* Gradiente de marca: permitido en DOS titulares en toda la página */
 @utility text-gradient-brand {
   background: linear-gradient(90deg, #037ecc, #079cfb 60%, #5ac8fa);
@@ -138,6 +165,8 @@
      ========================================================= */
 
   .btn-primary {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -158,6 +187,31 @@
       0 4px 12px rgba(3, 126, 204, 0.22);
     transition: transform 200ms var(--ease-standard), box-shadow 200ms var(--ease-standard),
       filter 200ms var(--ease-standard);
+  }
+
+  /* Shine sweep: franja de luz que cruza el botón al hover */
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.35) 50%,
+      transparent 60%
+    );
+    transform: translateX(-130%);
+    pointer-events: none;
+  }
+
+  .btn-primary:hover::before {
+    animation: btn-shine 600ms var(--ease-standard);
+  }
+
+  @keyframes btn-shine {
+    to {
+      transform: translateX(130%);
+    }
   }
 
   .btn-primary:hover {
@@ -192,22 +246,47 @@
     height: 48px;
     padding: 0 24px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--color-line-strong);
+    border: 1px solid transparent;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.42)) padding-box,
+      linear-gradient(
+          165deg,
+          rgba(255, 255, 255, 0.9),
+          rgba(255, 255, 255, 0.35) 45%,
+          rgba(3, 126, 204, 0.28)
+        )
+        border-box;
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 2px 10px rgba(15, 23, 42, 0.05);
     color: var(--color-ink);
     font-size: 15px;
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1;
-    transition: all 220ms var(--ease-standard);
+    transition:
+      color 220ms var(--ease-standard),
+      transform 220ms var(--ease-standard),
+      box-shadow 220ms var(--ease-standard);
   }
 
   .btn-ghost:hover {
-    border-color: rgba(3, 126, 204, 0.45);
     color: var(--color-brand-500);
-    background: rgba(3, 126, 204, 0.05);
+    transform: translateY(-1px);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(240, 248, 255, 0.5)) padding-box,
+      linear-gradient(
+          165deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(3, 126, 204, 0.25) 45%,
+          rgba(3, 126, 204, 0.45)
+        )
+        border-box;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      0 6px 18px rgba(3, 126, 204, 0.12);
   }
 
   .btn-ghost:focus-visible {
@@ -269,6 +348,12 @@
     background: rgba(255, 255, 255, 0.06);
   }
 
+  .btn-on-dark-primary:focus-visible,
+  .btn-on-dark-ghost:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(90, 200, 250, 0.4);
+  }
+
   /* =========================================================
      SHARED COMPONENTS
      ========================================================= */
@@ -286,15 +371,46 @@
 
   .feature-card {
     background: #fff;
-    border-radius: 20px;
+    border-radius: var(--radius-card);
     border: 1px solid var(--color-line);
     box-shadow: var(--shadow-card);
-    transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+    transition: transform 200ms var(--ease-standard), box-shadow 200ms var(--ease-standard);
   }
 
   .feature-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Variante para secciones índigo (Security): mismo lift, luz cian */
+  .feature-card-dark {
+    border-radius: var(--radius-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    transition:
+      transform 200ms var(--ease-standard),
+      border-color 200ms var(--ease-standard),
+      background-color 200ms var(--ease-standard);
+  }
+
+  .feature-card-dark:hover {
+    transform: translateY(-2px);
+    border-color: rgba(90, 200, 250, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Chip de éxito (Signed/Met) — antes triplicado a mano */
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    border: 1px solid var(--color-ok-line);
+    background: var(--color-ok-soft);
+    color: var(--color-ok-strong);
+    font-size: 11px;
+    font-weight: 600;
   }
 
   .icon-tile {
@@ -384,6 +500,147 @@
     transform: scaleX(1);
   }
 
+  /* Scroll-spy: el link de la sección visible queda marcado */
+  .nav-link.is-active {
+    color: var(--color-ink);
+  }
+
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+  }
+
+  /* ── Dropdown de Product (desktop) ── */
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 2px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--color-ink-secondary);
+    cursor: pointer;
+    transition: color 220ms var(--ease-standard);
+  }
+
+  .nav-trigger:hover,
+  .nav-trigger:focus-visible,
+  .nav-trigger.is-active,
+  .nav-item[data-open="true"] .nav-trigger {
+    color: var(--color-ink);
+    outline: none;
+  }
+
+  .nav-trigger:focus-visible {
+    box-shadow: 0 0 0 3px rgba(3, 126, 204, 0.22);
+    border-radius: 8px;
+  }
+
+  .nav-caret {
+    transition: transform 240ms var(--ease-out-quart);
+  }
+
+  .nav-item[data-open="true"] .nav-caret {
+    transform: rotate(180deg);
+  }
+
+  /* Panel de vidrio: mismo material del menú móvil */
+  .nav-panel {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 14px);
+    width: 600px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border-radius: 16px;
+    border: 1px solid hsl(240 20% 92% / 0.9);
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    box-shadow: var(--shadow-float);
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 220ms var(--ease-standard),
+      transform 260ms var(--ease-out-quart),
+      visibility 0s linear 260ms;
+  }
+
+  .nav-item[data-open="true"] .nav-panel {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 220ms var(--ease-standard),
+      transform 260ms var(--ease-out-quart),
+      visibility 0s;
+  }
+
+  .nav-panel-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: var(--radius-control);
+    transition: background-color 160ms var(--ease-standard);
+  }
+
+  .nav-panel-link:hover,
+  .nav-panel-link:focus-visible {
+    background: rgba(3, 126, 204, 0.06);
+    outline: none;
+  }
+
+  .nav-panel-link:hover .nav-panel-title,
+  .nav-panel-link:focus-visible .nav-panel-title {
+    color: var(--color-brand-500);
+  }
+
+  .nav-panel-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: color 160ms var(--ease-standard);
+  }
+
+  .nav-panel-desc {
+    margin-top: 1px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+
+  /* Skip link — invisible hasta recibir foco de teclado */
+  .skip-link {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 100;
+    padding: 12px 18px;
+    border-radius: var(--radius-control);
+    background: #fff;
+    color: var(--color-ink);
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: var(--shadow-float);
+    transform: translateY(calc(-100% - 20px));
+    transition: transform 200ms var(--ease-out-quart);
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
+    outline: none;
+    box-shadow: var(--shadow-float), 0 0 0 4px rgba(3, 126, 204, 0.25);
+  }
+
   /* Hamburger: tres líneas que se funden en una X */
   .nav-burger {
     display: flex;
@@ -433,10 +690,12 @@
   }
 
   /* =========================================================
-     MOBILE MENU — pantalla completa bajo el nav (patrón
-     Linear): links grandes, divisores hairline, acciones
-     abajo. UNA transición del panel entero: fade + 6px.
-     Sin números, sin stagger.
+     MOBILE MENU — escena de vidrio a pantalla completa.
+     El panel se revela como cortina (clip-path) con las
+     auroras de marca dentro; los links entran en stagger
+     (~60ms por ítem) con índice numerado y flecha. La
+     salida es más rápida y sin stagger (patrón MD motion:
+     exit ≈ 60% del enter).
      ========================================================= */
 
   .mobile-menu {
@@ -445,47 +704,124 @@
     z-index: 40;
     display: flex;
     flex-direction: column;
-    padding-top: 88px;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    padding-top: 92px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(28px) saturate(1.5);
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    clip-path: inset(0 0 100% 0);
     opacity: 0;
-    transform: translateY(-6px);
     pointer-events: none;
     visibility: hidden;
     transition:
-      opacity 240ms var(--ease-standard),
-      transform 240ms var(--ease-standard),
-      visibility 0s linear 240ms;
+      clip-path 360ms var(--ease-out-quart),
+      opacity 240ms var(--ease-standard) 80ms,
+      visibility 0s linear 360ms;
   }
 
   .mobile-menu.is-open {
+    clip-path: inset(0 0 0% 0);
     opacity: 1;
-    transform: none;
     pointer-events: auto;
     visibility: visible;
     transition:
-      opacity 240ms var(--ease-standard),
-      transform 240ms var(--ease-standard),
+      clip-path 560ms var(--ease-out-quart),
+      opacity 180ms var(--ease-standard),
       visibility 0s;
   }
 
+  /* Luz de marca dentro del panel: cian arriba-derecha,
+     índigo abajo-izquierda. Radiales simples, sin blur() caro */
+  .mobile-menu::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(48% 36% at 88% 6%, rgba(7, 156, 251, 0.1), transparent 70%),
+      radial-gradient(52% 42% at 0% 100%, rgba(42, 45, 107, 0.08), transparent 72%);
+    pointer-events: none;
+  }
+
+  /* El mismo grano del hero: firma compartida */
+  .mobile-menu::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* Stagger compartido: links, bloque CTA y línea de confianza.
+     Cada elemento fija --i; el delay crece 60ms por ítem. */
+  .menu-enter {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 150ms var(--ease-standard),
+      transform 150ms var(--ease-standard);
+  }
+
+  .mobile-menu.is-open .menu-enter {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 500ms var(--ease-out-quart),
+      transform 500ms var(--ease-out-quart);
+    transition-delay: calc(140ms + var(--i, 0) * 60ms);
+  }
+
   .mobile-menu-link {
-    display: block;
-    padding: 18px 0;
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 19px 0;
+    font-size: 27px;
     font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     color: var(--color-ink);
-    border-bottom: 1px solid var(--color-line);
-    transition: color 180ms var(--ease-standard), padding-left 220ms var(--ease-standard);
+    border-bottom: 1px solid hsl(240 20% 90% / 0.85);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Con el menú agrupado (8+ links) el tamaño baja para que respire */
+  .mobile-menu-link--sm {
+    padding: 13px 0;
+    font-size: 20px;
+  }
+
+  /* Etiqueta de grupo dentro del menú móvil */
+  .mobile-menu-group {
+    display: block;
+    padding: 22px 0 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .menu-arrow {
+    margin-left: auto;
+    color: var(--color-ink-muted);
+    opacity: 0.45;
+    transition:
+      transform 240ms var(--ease-out-quart),
+      color 180ms var(--ease-standard),
+      opacity 180ms var(--ease-standard);
   }
 
   .mobile-menu-link:hover,
-  .mobile-menu-link:focus-visible {
+  .mobile-menu-link:focus-visible,
+  .mobile-menu-link:active {
     color: var(--color-brand-500);
-    padding-left: 6px;
     outline: none;
+  }
+
+  .mobile-menu-link:hover .menu-arrow,
+  .mobile-menu-link:focus-visible .menu-arrow,
+  .mobile-menu-link:active .menu-arrow {
+    transform: translateX(5px);
+    color: var(--color-brand-500);
+    opacity: 1;
   }
 
   /* =========================================================
@@ -534,7 +870,7 @@
     top: 8%;
     width: 760px;
     height: 620px;
-    background: radial-gradient(ellipse at center, rgba(7, 156, 251, 0.1), transparent 62%);
+    background: radial-gradient(ellipse at center, rgba(7, 156, 251, 0.14), transparent 62%);
     pointer-events: none;
   }
 
@@ -544,8 +880,16 @@
     top: 22%;
     width: 560px;
     height: 440px;
-    background: radial-gradient(ellipse at center, rgba(3, 126, 204, 0.05), transparent 68%);
+    background: radial-gradient(ellipse at center, rgba(3, 126, 204, 0.08), transparent 68%);
     pointer-events: none;
+  }
+
+  /* Contenedor de las auroras: recibe el micro-parallax de scroll */
+  .hero-ambient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    will-change: transform;
   }
 
   /* Aurora ambiental: 22s, alternante, casi estática */
@@ -576,6 +920,53 @@
     }
   }
 
+  /* Segunda aurora — índigo tenue abajo-izquierda. Da al vidrio un
+     segundo color que refractar. 30s: nunca sincroniza con la de 22s */
+  .hero-aurora-b {
+    position: absolute;
+    left: -10%;
+    bottom: -18%;
+    width: 720px;
+    height: 520px;
+    border-radius: 50%;
+    background: linear-gradient(
+      300deg,
+      rgba(42, 45, 107, 0.07),
+      rgba(3, 126, 204, 0.06) 55%,
+      transparent 80%
+    );
+    filter: blur(90px);
+    animation: aurora-drift-b 30s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes aurora-drift-b {
+    from {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    to {
+      transform: translate(48px, -30px) rotate(-6deg);
+    }
+  }
+
+  /* Spotlight que sigue al cursor — luz ambiental, no un flashlight */
+  .hero-spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      620px circle at var(--sx, 50%) var(--sy, 30%),
+      rgba(3, 126, 204, 0.07),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 500ms var(--ease-standard);
+  }
+
+  .hero-spotlight.is-lit {
+    opacity: 1;
+  }
+
   /* =========================================================
      HERO BADGE — pill con punto "activo" y highlight
      ========================================================= */
@@ -586,18 +977,23 @@
     gap: 0.55rem;
     padding: 7px 14px;
     border-radius: 9999px;
-    background: rgba(3, 126, 204, 0.07);
-    border: 1px solid rgba(3, 126, 204, 0.22);
+    border: 1px solid transparent;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.42)) padding-box,
+      linear-gradient(120deg, rgba(255, 255, 255, 0.9), rgba(3, 126, 204, 0.38)) border-box;
+    backdrop-filter: blur(14px) saturate(1.5);
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      0 1px 8px rgba(3, 126, 204, 0.07);
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      0 1px 8px rgba(3, 126, 204, 0.08);
     color: var(--color-brand-500);
-    transition: background-color 220ms var(--ease-standard), border-color 220ms var(--ease-standard);
+    transition: box-shadow 220ms var(--ease-standard);
   }
 
   .hero-badge:hover {
-    background: rgba(3, 126, 204, 0.1);
-    border-color: rgba(3, 126, 204, 0.32);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      0 2px 14px rgba(3, 126, 204, 0.16);
   }
 
   .badge-dot {
@@ -627,6 +1023,21 @@
     100% {
       transform: scale(1.8);
       opacity: 0;
+    }
+  }
+
+  /* Shimmer lentísimo del gradiente del headline — sólo en el hero */
+  .headline-shimmer {
+    background-size: 200% 100%;
+    animation: gradient-shift 8s var(--ease-standard) infinite alternate;
+  }
+
+  @keyframes gradient-shift {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 100% 50%;
     }
   }
 
@@ -691,6 +1102,73 @@
   }
 
   /* =========================================================
+     GLASS MATERIAL — el vidrio del hero. Fondo translúcido en
+     dos gradientes (relleno + borde hairline que atrapa la
+     luz), blur con saturación y highlight especular arriba.
+     ========================================================= */
+
+  .glass-panel {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.5)) padding-box,
+      linear-gradient(
+          165deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.3) 40%,
+          rgba(3, 126, 204, 0.22)
+        )
+        border-box;
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      var(--shadow-float);
+  }
+
+  /* Móvil: mismo look, blur más barato */
+  @media (max-width: 767px) {
+    .glass-panel {
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    }
+  }
+
+  /* Sheen periódico: franja de luz que barre el panel. Cada
+     elemento fija su --sheen-delay para que nunca sincronicen */
+  .glass-sheen {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 65%
+    );
+    transform: translateX(-120%);
+    animation: sheen-sweep 7s var(--ease-standard) infinite;
+    animation-delay: var(--sheen-delay, 0s);
+    pointer-events: none;
+  }
+
+  @keyframes sheen-sweep {
+    0% {
+      transform: translateX(-120%);
+    }
+    22% {
+      transform: translateX(120%);
+    }
+    100% {
+      transform: translateX(120%);
+    }
+  }
+
+  /* =========================================================
      PRODUCT SHOWCASE — profundidad: glow trasero, frame con
      tilt suave al cursor, cards flotando a ritmos distintos.
      ========================================================= */
@@ -699,6 +1177,65 @@
     transition: transform 320ms var(--ease-standard);
     will-change: transform;
     transform-style: preserve-3d;
+  }
+
+  /* Wrapper interno del showcase: recibe el parallax de scroll
+     (el filling entrance vive en el contenedor externo) */
+  .showcase-parallax {
+    position: relative;
+    will-change: transform;
+  }
+
+  /* Glare especular: el vidrio del frame "refleja" según el
+     ángulo del tilt — --gx/--gy los fija el mismo rAF del tilt */
+  .frame-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      420px circle at var(--gx, 50%) var(--gy, -20%),
+      rgba(255, 255, 255, 0.3),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 300ms var(--ease-standard);
+  }
+
+  .showcase-frame:hover .frame-glare {
+    opacity: 1;
+  }
+
+  /* Sheen de entrada del frame: un solo barrido, encadenado al
+     final del entrance (~1.15s tras el load) */
+  .frame-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .frame-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.35) 50%,
+      transparent 60%
+    );
+    transform: translateX(-130%);
+    animation: sheen-once 1.4s var(--ease-standard) 1.15s 1 both;
+  }
+
+  @keyframes sheen-once {
+    to {
+      transform: translateX(130%);
+    }
   }
 
   /* Parallax de las cards: el translate del cursor vive en el
@@ -738,6 +1275,20 @@
     }
   }
 
+  .float-c {
+    animation: float-c 10.5s ease-in-out 0.8s infinite;
+  }
+
+  @keyframes float-c {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
   /* =========================================================
      SCROLL REVEAL (§6) — para las secciones bajo el fold
      ========================================================= */
@@ -754,6 +1305,57 @@
     transform: none;
   }
 
+  /* Medidor que se llena on-scroll. Por defecto (sin JS o con reduced-motion)
+     queda en su valor final; con .js-motion arranca en 0 y se llena cuando su
+     .reveal contenedor se hace visible. --meter fija el valor por instancia. */
+  .meter-fill {
+    width: var(--meter, 62%);
+  }
+
+  html.js-motion .reveal:not(.is-visible) .meter-fill {
+    width: 0;
+  }
+
+  html.js-motion .reveal.is-visible .meter-fill {
+    width: var(--meter, 62%);
+    transition: width 900ms var(--ease-out-quart) 250ms;
+  }
+
+}
+
+/* =========================================================
+   HERO HEADLINE FIT — en el grid de dos columnas la columna
+   de copy mide ~576px: el display de 72px no cabe y el
+   titular rompía en 5 líneas con huérfanas. Esta escala
+   sigue el ancho real de la columna para que las 3 líneas
+   previstas queden intactas. Sin capa: debe ganar a la
+   utility text-display (capa utilities).
+   ========================================================= */
+
+@media (min-width: 1024px) {
+  .hero-surface .text-display {
+    font-size: clamp(3.4rem, 6.33vw - 0.6rem, 4.125rem);
+  }
+}
+
+/* =========================================================
+   NO BACKDROP-FILTER — el vidrio cae a casi-opaco legible
+   ========================================================= */
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-panel,
+  .btn-ghost,
+  .hero-badge {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.9)) padding-box,
+      linear-gradient(
+          165deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.4) 40%,
+          rgba(3, 126, 204, 0.25)
+        )
+        border-box;
+  }
 }
 
 /* =========================================================
@@ -777,10 +1379,21 @@
   }
 
   .hero-aurora,
+  .hero-aurora-b,
   .float-a,
   .float-b,
-  .badge-dot::before {
+  .float-c,
+  .badge-dot::before,
+  .glass-sheen::after,
+  .frame-sheen::after,
+  .headline-shimmer,
+  .btn-primary::before {
     animation: none;
+  }
+
+  .hero-spotlight,
+  .frame-glare {
+    display: none;
   }
 
   .showcase-frame,
@@ -795,6 +1408,32 @@
   }
 
   .mobile-menu {
+    clip-path: none;
     transition-duration: 0.01ms;
+  }
+
+  .menu-enter,
+  .mobile-menu.is-open .menu-enter {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .menu-arrow {
+    transition: none;
+  }
+
+  .nav-panel,
+  .nav-caret,
+  .skip-link,
+  .feature-card-dark:hover {
+    transition: none;
+    transform: translateX(-50%);
+  }
+
+  .nav-caret,
+  .skip-link,
+  .feature-card-dark:hover {
+    transform: none;
   }
 }
