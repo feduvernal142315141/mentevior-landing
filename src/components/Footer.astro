@@ -1,30 +1,29 @@
 ---
-import { Image } from "astro:assets";
-import emblem from "../assets/logo-emblem.png";
+// Sin enlaces muertos (#): About, Privacy, Terms y HIPAA Notice vuelven cuando
+// existan sus páginas reales — en un producto HIPAA, un legal muerto resta
+// credibilidad. text-white/60 mínimo sobre indigo-950 para pasar WCAG AA.
+import Logo from "./Logo.astro";
+import { CALENDLY_URL, CONTACT_EMAIL } from "../config";
 
 const columns = [
   {
     title: "Product",
     links: [
+      { label: "How it works", href: "#how" },
       { label: "Features", href: "#features" },
+      { label: "Improve with AI", href: "#ai" },
+      { label: "Who it's for", href: "#roles" },
       { label: "Security", href: "#security" },
       { label: "Pricing", href: "#pricing" },
-      { label: "Request a demo", href: "#demo" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#" },
-      { label: "Contact", href: "mailto:hello@mentevior.com" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
-      { label: "HIPAA Notice", href: "#" },
+      { label: "Why MenteVior", href: "#why" },
+      { label: "FAQ", href: "#faq" },
+      { label: "Book a demo", href: CALENDLY_URL, calendly: true },
+      { label: "Contact", href: `mailto:${CONTACT_EMAIL}` },
     ],
   },
 ];
@@ -34,15 +33,10 @@ const year = new Date().getFullYear();
 
 <footer class="bg-indigo-950 pt-16 pb-8">
   <div class="mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
-    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr]">
       <div>
-        <a href="/" class="flex items-center gap-3" aria-label="MenteVior home">
-          <Image src={emblem} alt="" width={44} densities={[1, 2]} class="h-11 w-11 object-contain" />
-          <span class="text-[21px] font-bold tracking-[-0.02em] text-white">
-            Mente<span class="text-brand-300">Vior</span>
-          </span>
-        </a>
-        <p class="mt-4 max-w-[32ch] text-[13.5px] leading-relaxed text-white/55">
+        <Logo dark />
+        <p class="mt-4 max-w-[32ch] text-caption leading-relaxed text-white/60">
           All-in-one practice management and clinical documentation for ABA therapy
           practices.
         </p>
@@ -50,11 +44,15 @@ const year = new Date().getFullYear();
 
       {columns.map((col) => (
         <nav aria-label={col.title}>
-          <p class="text-eyebrow !text-[11px] text-white/40">{col.title}</p>
+          <p class="text-eyebrow !text-[11px] text-white/60">{col.title}</p>
           <ul class="mt-4 space-y-2.5">
             {col.links.map((link) => (
               <li>
-                <a href={link.href} class="text-[14px] text-white/65 transition-colors hover:text-white">
+                <a
+                  href={link.href}
+                  data-calendly={link.calendly || undefined}
+                  class="text-body-sm text-white/65 transition-colors hover:text-white"
+                >
                   {link.label}
                 </a>
               </li>
@@ -65,8 +63,8 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/[0.08] pt-7 sm:flex-row">
-      <p class="text-[12.5px] text-white/40">© {year} MenteVior. All rights reserved.</p>
-      <p class="text-[12.5px] text-white/40">Made for the ABA community</p>
+      <p class="text-micro text-white/60">© {year} MenteVior. All rights reserved.</p>
+      <p class="text-micro text-white/60">Made for the ABA community</p>
     </div>
   </div>
 </footer>

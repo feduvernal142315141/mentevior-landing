@@ -1,0 +1,98 @@
+---
+// "Who it's for" — la idea más diferenciadora del análisis competitivo (nav
+// por rol, Artemis ABA). Los roles en MenteVior son DINÁMICOS (cada clínica
+// define los suyos): estos cuatro son configuraciones típicas, y el footnote
+// lo deja claro para no prometer roles fijos.
+import Section from "./Section.astro";
+
+const roles = [
+  {
+    title: "BCBA",
+    subtitle: "Clinical leadership",
+    icon: "M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z",
+    points: [
+      "Supervision logs & monthly reports",
+      "Treatment plans & assessments",
+      "Progress graphs across every client",
+    ],
+  },
+  {
+    title: "RBT / BCaBA",
+    subtitle: "Direct service",
+    icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z",
+    points: [
+      "On-site data collection at session pace",
+      "97153 notes with guidance per field",
+      "Today's schedule at a glance",
+    ],
+  },
+  {
+    title: "Practice owner",
+    subtitle: "Direction & compliance",
+    icon: "M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6",
+    points: [
+      "Compliance dashboard with severities",
+      "Roles & permissions you define",
+      "Templates per document type",
+    ],
+  },
+  {
+    title: "Billing & operations",
+    subtitle: "Revenue cycle",
+    icon: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1ZM8 8h8m-8 4h8m-8 4h5",
+    points: [
+      "Authorization unit tracking with alerts",
+      "Claims & payer management",
+      "Batch claims straight to PDF",
+    ],
+  },
+];
+---
+
+<Section id="roles" class="border-y border-line bg-page-alt">
+  <div class="mx-auto max-w-[720px] text-center">
+    <span class="eyebrow-pill text-eyebrow reveal">Who it's for</span>
+    <h2 class="text-h2 reveal mt-5" style="--reveal-delay: 70ms">
+      Every role sees exactly what it needs
+    </h2>
+  </div>
+
+  <div class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    {roles.map((role, i) => (
+      <div class="feature-card reveal p-6" style={`--reveal-delay: ${i * 70}ms`}>
+        <span class="icon-tile">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d={role.icon} />
+          </svg>
+        </span>
+        <h3 class="mt-4 text-[16.5px] font-semibold tracking-[-0.01em] text-ink">{role.title}</h3>
+        <p class="text-micro font-medium uppercase tracking-[0.06em] text-brand-500">{role.subtitle}</p>
+        <ul class="mt-4 space-y-2.5">
+          {role.points.map((point) => (
+            <li class="flex items-start gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="mt-[3px] shrink-0 text-brand-500" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              <span class="text-caption leading-snug text-ink-secondary">{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  <p class="reveal mt-8 text-center text-caption text-ink-muted" style="--reveal-delay: 280ms">
+    Roles in MenteVior are defined by your clinic — permissions per module and per
+    action. These are just common setups.
+  </p>
+</Section>

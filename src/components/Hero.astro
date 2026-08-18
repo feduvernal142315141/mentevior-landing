@@ -5,17 +5,24 @@
 // patrón de Linear/Stripe. El texto vende claridad; el showcase, tecnología.
 import { Picture } from "astro:assets";
 import dashboardShot from "../assets/shot-dashboard.png";
+import StatusChip from "./StatusChip.astro";
+import { CALENDLY_URL } from "../config";
 ---
 
 <section
   class="hero-surface overflow-hidden pt-[104px] pb-12 sm:pt-[128px] lg:pt-[172px] lg:pb-[120px]"
   id="product"
 >
-  <!-- Capas de luz. La aurora usa blur(90px): sólo desktop, en móvil es cara -->
-  <div class="hero-aurora hidden md:block" aria-hidden="true"></div>
+  <!-- Capas de luz. Las auroras usan blur(90px): sólo desktop, en móvil son caras.
+       El wrapper .hero-ambient recibe el micro-parallax de scroll. -->
+  <div class="hero-ambient" id="hero-ambient" aria-hidden="true">
+    <div class="hero-aurora hidden md:block"></div>
+    <div class="hero-aurora-b hidden md:block"></div>
+  </div>
   <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-glow-copy" aria-hidden="true"></div>
   <div class="hero-glow-product hidden lg:block" aria-hidden="true"></div>
+  <div class="hero-spotlight hidden md:block" id="hero-spotlight" aria-hidden="true"></div>
 
   <div
     class="relative mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-6 md:px-8 lg:grid-cols-[55fr_45fr] lg:gap-14 lg:px-12"
@@ -30,7 +37,7 @@ import dashboardShot from "../assets/shot-dashboard.png";
       <h1 class="text-display enter mt-7" style="--d: 140ms">
         Every part of your<br />
         ABA practice,<br class="hidden sm:block" />
-        <span class="headline-glow text-gradient-brand">finally in one place</span>
+        <span class="headline-glow text-gradient-brand headline-shimmer">finally in one place</span>
       </h1>
 
       <p
@@ -42,19 +49,24 @@ import dashboardShot from "../assets/shot-dashboard.png";
       </p>
 
       <div class="enter mt-9 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:items-center" style="--d: 330ms">
-        <a href="#demo" class="btn-primary">Request a demo</a>
+        <a href={CALENDLY_URL} data-calendly class="btn-primary">Book a demo</a>
         <a href="#features" class="btn-ghost">
+          See how it works
           <svg
             class="ic-play"
             width="15"
             height="15"
             viewBox="0 0 24 24"
-            fill="currentColor"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             aria-hidden="true"
           >
-            <path d="M8 5.14v13.72L19 12 8 5.14Z" />
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
           </svg>
-          See how it works
         </a>
       </div>
 
@@ -66,11 +78,12 @@ import dashboardShot from "../assets/shot-dashboard.png";
               height="13"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#037ECC"
+              stroke="currentColor"
               stroke-width="2.8"
               stroke-linecap="round"
               stroke-linejoin="round"
               opacity="0.75"
+              class="text-brand-500"
               aria-hidden="true"
             >
               <path d="M20 6 9 17l-5-5" />
@@ -87,25 +100,27 @@ import dashboardShot from "../assets/shot-dashboard.png";
       id="showcase"
       aria-hidden="true"
     >
+      <div class="showcase-parallax" id="showcase-parallax">
       <!-- Luz trasera del conjunto -->
       <div
         class="absolute inset-0 -m-14"
-        style="background: radial-gradient(ellipse 62% 58% at 55% 45%, rgba(3,126,204,0.09), transparent 70%)"
+        style="background: radial-gradient(ellipse 62% 58% at 55% 45%, rgba(3,126,204,0.12), transparent 70%)"
       >
       </div>
 
-      <!-- Frame con tilt -->
+      <!-- Frame con tilt — chrome de vidrio; el screenshot queda nítido -->
       <div
-        class="showcase-frame relative rounded-[24px] border border-line bg-white p-1.5"
+        class="showcase-frame glass-panel relative rounded-frame p-1.5"
         id="showcase-frame"
-        style="box-shadow: var(--shadow-float), 0 0 0 1px rgba(255,255,255,0.6) inset"
       >
+        <div class="frame-glare" aria-hidden="true"></div>
+        <div class="frame-sheen" aria-hidden="true"></div>
         <div class="flex items-center gap-1.5 px-3 py-2.5">
           <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
           <span class="h-2.5 w-2.5 rounded-full bg-[hsl(240_15%_90%)]"></span>
           <span
-            class="ml-3 flex h-6 flex-1 items-center rounded-md bg-page-alt px-3 text-[10px] text-ink-muted"
+            class="ml-3 flex h-6 flex-1 items-center rounded-md bg-white/45 px-3 text-[10px] text-ink-muted"
           >
             app.mentevior.com / dashboard
           </span>
@@ -131,18 +146,15 @@ import dashboardShot from "../assets/shot-dashboard.png";
         data-parallax="8"
       >
         <div
-          class="float-a w-[190px] rotate-[-2deg] rounded-[20px] border border-line bg-white/95 p-4 backdrop-blur-sm"
-          style="box-shadow: var(--shadow-float)"
+          class="float-a glass-panel glass-sheen w-[190px] rotate-[-2deg] rounded-card p-4"
+          style="--sheen-delay: 3s"
         >
           <p class="text-eyebrow !text-[9.5px] text-ink-muted">Session Note · 97155</p>
           <div class="mt-1.5 flex items-center gap-2">
             <svg viewBox="0 0 90 22" class="h-5 w-16 text-ink-secondary" aria-hidden="true">
               <path d="M2 16 C 12 4, 18 20, 28 12 S 44 4, 52 12 S 70 20, 88 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
             </svg>
-            <span class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2 py-0.5 text-[10px] font-semibold text-[hsl(142_60%_30%)]">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
-              Signed
-            </span>
+            <StatusChip class="px-2 py-0.5 text-[10px]">Signed</StatusChip>
           </div>
         </div>
       </div>
@@ -152,28 +164,47 @@ import dashboardShot from "../assets/shot-dashboard.png";
         data-parallax="-6"
       >
         <div
-          class="float-b w-[195px] rotate-[2deg] rounded-[20px] border border-line bg-white/95 p-4 backdrop-blur-sm"
-          style="box-shadow: var(--shadow-float)"
+          class="float-b glass-panel glass-sheen w-[195px] rotate-[2deg] rounded-card p-4"
+          style="--sheen-delay: 8.5s"
         >
           <p class="text-eyebrow !text-[9.5px] text-ink-muted">Supervision</p>
           <div class="mt-1.5 flex items-center gap-2">
             <span class="text-[22px] font-semibold leading-none tabular-nums">12.4%</span>
-            <span
-              class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2 py-0.5 text-[10px] font-semibold text-[hsl(142_60%_30%)]"
-            >
-              <svg
-                width="9"
-                height="9"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
-              Met
-            </span>
+            <StatusChip class="px-2 py-0.5 text-[10px]">Met</StatusChip>
           </div>
         </div>
+      </div>
+
+      <!-- Chip compacto: tercera pieza de la escena de vidrio -->
+      <div
+        class="parallax-layer absolute top-[30%] -left-4 hidden sm:block lg:-left-10"
+        data-parallax="5"
+      >
+        <div
+          class="float-c glass-panel glass-sheen w-[160px] rotate-[1.5deg] rounded-2xl p-3"
+          style="--sheen-delay: 5.4s"
+        >
+          <p class="text-eyebrow !text-[9.5px] text-ink-muted">Billing</p>
+          <div class="mt-1 flex items-center gap-1.5">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-brand-500"
+              aria-hidden="true"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+            </svg>
+            <span class="text-[12.5px] font-semibold">3 notes ready</span>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -204,6 +235,9 @@ import dashboardShot from "../assets/shot-dashboard.png";
       raf = requestAnimationFrame(() => {
         raf = 0;
         frame.style.transform = `perspective(1200px) rotateX(${(-py * 2.4).toFixed(2)}deg) rotateY(${(px * 2.4).toFixed(2)}deg)`;
+        // El glare especular sigue el mismo ángulo del tilt
+        frame.style.setProperty("--gx", `${((px + 0.5) * 100).toFixed(1)}%`);
+        frame.style.setProperty("--gy", `${((py + 0.5) * 100).toFixed(1)}%`);
         for (const layer of layers) {
           const factor = Number(layer.dataset.parallax ?? 0);
           layer.style.setProperty("--px", `${(px * factor).toFixed(1)}px`);
@@ -214,10 +248,56 @@ import dashboardShot from "../assets/shot-dashboard.png";
 
     wrap.addEventListener("pointerleave", () => {
       frame.style.transform = "";
+      frame.style.removeProperty("--gx");
+      frame.style.removeProperty("--gy");
       for (const layer of layers) {
         layer.style.removeProperty("--px");
         layer.style.removeProperty("--py");
       }
     });
+
+    // Spotlight ambiental: sigue al cursor sobre todo el hero.
+    // Mismo patrón rAF-throttled que el tilt.
+    const hero = document.querySelector<HTMLElement>(".hero-surface")!;
+    const spot = document.getElementById("hero-spotlight")!;
+    let sRaf = 0;
+    let sx = 0;
+    let sy = 0;
+
+    hero.addEventListener("pointermove", (e) => {
+      const r = hero.getBoundingClientRect();
+      sx = e.clientX - r.left;
+      sy = e.clientY - r.top;
+      if (sRaf) return;
+      sRaf = requestAnimationFrame(() => {
+        sRaf = 0;
+        spot.style.setProperty("--sx", `${sx.toFixed(0)}px`);
+        spot.style.setProperty("--sy", `${sy.toFixed(0)}px`);
+      });
+    });
+
+    hero.addEventListener("pointerenter", () => spot.classList.add("is-lit"));
+    hero.addEventListener("pointerleave", () => spot.classList.remove("is-lit"));
+
+    // Micro-parallax de scroll: el showcase sube apenas, las auroras
+    // bajan — profundidad real. Se apaga cuando el hero sale de vista.
+    const pWrap = document.getElementById("showcase-parallax")!;
+    const ambient = document.getElementById("hero-ambient")!;
+    let scRaf = 0;
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scRaf) return;
+        scRaf = requestAnimationFrame(() => {
+          scRaf = 0;
+          const y = window.scrollY;
+          if (y > window.innerHeight * 1.2) return;
+          pWrap.style.transform = `translateY(${(-y * 0.04).toFixed(1)}px)`;
+          ambient.style.transform = `translateY(${(y * 0.06).toFixed(1)}px)`;
+        });
+      },
+      { passive: true },
+    );
   }
 </script>

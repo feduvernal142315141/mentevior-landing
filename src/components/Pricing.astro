@@ -1,6 +1,8 @@
 ---
 // Estructura sin números (§4.9): los tiers existen en el modelo del backoffice
-// (basic/pro/enterprise) pero el precio es a medida.
+// (basic/pro/enterprise) pero el precio es a medida. Los CTAs se diferencian
+// por tier: demo para Basic/Pro, contacto directo para Enterprise.
+import { CALENDLY_URL, CONTACT_EMAIL } from "../config";
 
 const tiers = [
   {
@@ -32,6 +34,7 @@ const tiers = [
     name: "Enterprise",
     tagline: "Multi-site organizations",
     featured: false,
+    cta: "Talk to sales",
     features: [
       "Everything in Pro",
       "Multiple locations under one org",
@@ -56,7 +59,7 @@ const tiers = [
       {tiers.map((tier, i) => (
         <div
           class:list={[
-            "reveal relative rounded-[20px] border bg-white p-8",
+            "reveal relative rounded-card border bg-white p-8",
             tier.featured
               ? "border-[rgba(3,126,204,0.45)] lg:-translate-y-3"
               : "border-line",
@@ -70,28 +73,32 @@ const tiers = [
           )}
 
           <h3 class="text-h3">{tier.name}</h3>
-          <p class="mt-1 text-[13.5px] text-ink-muted">{tier.tagline}</p>
+          <p class="mt-1 text-caption text-ink-muted">{tier.tagline}</p>
           <p class="mt-5 text-[24px] font-semibold tracking-[-0.02em]">Custom pricing</p>
 
           <ul class="mt-6 space-y-3 border-t border-line pt-6">
             {tier.features.map((feature) => (
               <li class="flex items-start gap-2.5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#037ECC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-brand-500" aria-hidden="true">
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
-                <span class="text-[13.5px] leading-snug text-ink-secondary">{feature}</span>
+                <span class="text-caption leading-snug text-ink-secondary">{feature}</span>
               </li>
             ))}
           </ul>
 
-          <a href="#demo" class:list={["mt-8 w-full", tier.featured ? "btn-primary" : "btn-ghost"]}>
-            Request a demo
+          <a
+            href={tier.cta ? `mailto:${CONTACT_EMAIL}?subject=Enterprise%20inquiry` : CALENDLY_URL}
+            data-calendly={tier.cta ? undefined : true}
+            class:list={["mt-8 w-full", tier.featured ? "btn-primary" : "btn-ghost"]}
+          >
+            {tier.cta ?? "Book a demo"}
           </a>
         </div>
       ))}
     </div>
 
-    <p class="reveal mt-10 text-center text-[13.5px] text-ink-muted" style="--reveal-delay: 210ms">
+    <p class="reveal mt-10 text-center text-caption text-ink-muted" style="--reveal-delay: 210ms">
       Pricing is tailored to your practice size and services.
     </p>
   </div>

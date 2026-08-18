@@ -1,7 +1,8 @@
 ---
+import { CALENDLY_URL, CONTACT_EMAIL } from "../config";
 ---
 
-<section class="relative overflow-hidden bg-indigo-900 py-[88px] lg:py-[128px]" id="demo">
+<section class="relative overflow-hidden bg-indigo-900 py-[72px] lg:py-[128px]" id="demo">
   <div
     class="pointer-events-none absolute -right-24 -top-32 h-[560px] w-[560px] rounded-full"
     style="background: radial-gradient(circle, rgba(90,200,250,0.12), transparent 65%)"
@@ -17,14 +18,18 @@
     </p>
 
     <div class="reveal mt-9 flex flex-wrap items-center justify-center gap-3.5" style="--reveal-delay: 140ms">
-      <a href="mailto:hello@mentevior.com?subject=Demo%20request" class="btn-on-dark-primary">
-        Request a demo
-      </a>
+      <a href={CALENDLY_URL} data-calendly class="btn-on-dark-primary">Book a demo</a>
       <a href="#features" class="btn-on-dark-ghost">Explore the product</a>
     </div>
 
-    <p class="reveal mt-7 text-[13.5px] text-white/50" style="--reveal-delay: 210ms">
-      No credit card&ensp;·&ensp;No setup fee to evaluate
+    <p class="reveal mt-7 text-caption text-white/60" style="--reveal-delay: 210ms">
+      No credit card&ensp;·&ensp;No setup fee to evaluate&ensp;·&ensp;Prefer email?&nbsp;
+      <a
+        href={`mailto:${CONTACT_EMAIL}?subject=Demo%20request`}
+        class="font-medium text-white/80 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white"
+      >
+        {CONTACT_EMAIL}
+      </a>
     </p>
   </div>
 </section>

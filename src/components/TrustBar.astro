@@ -1,16 +1,30 @@
 ---
-// Placeholders neutros a propósito: no se inventan clínicas ni logos (§4.3).
-// Cuando haya clientes reales, cada slot se reemplaza por su logo en escala
-// de grises a 24px de alto.
+// Ex-"TrustBar" de logos placeholder. Hasta tener logos de clientes reales,
+// esta franja prueba profundidad de producto con hechos verificables del
+// front-office (métodos de medición, formatos de nota CPT, reportes PDF).
+// Cuando haya clientes, se convierte en la barra de logos en escala de grises.
+const facts = [
+  { stat: "5", label: "data collection methods, charted automatically" },
+  { stat: "3", label: "CPT session-note formats with built-in guidance" },
+  { stat: "7", label: "clinical & billing reports, one click to PDF" },
+  { stat: "1", label: "connected record — from data point to claim" },
+];
 ---
 
 <section class="border-y border-line bg-page-alt">
-  <div class="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-10 gap-y-4 px-6 py-7 md:px-8 lg:px-12">
-    <p class="text-[13px] font-medium text-ink-muted">Trusted by ABA teams across the U.S.</p>
-    <div class="flex flex-1 flex-wrap items-center gap-x-10 gap-y-3 opacity-40" aria-hidden="true">
-      {[92, 76, 104, 84, 96].map((w) => (
-        <span class="h-6 rounded-md bg-[hsl(240_10%_62%)]" style={`width:${w}px`}></span>
-      ))}
-    </div>
+  <div
+    class="mx-auto grid max-w-[1200px] grid-cols-1 gap-x-10 gap-y-6 px-6 py-9 sm:grid-cols-2 md:px-8 lg:grid-cols-4 lg:px-12"
+  >
+    {facts.map((item, i) => (
+      <div class="reveal flex items-baseline gap-3" style={`--reveal-delay: ${i * 70}ms`}>
+        <span
+          class="text-[30px] font-bold leading-none tracking-[-0.02em] tabular-nums text-brand-500"
+          data-count={item.stat}
+        >
+          {item.stat}
+        </span>
+        <span class="max-w-[24ch] text-caption leading-snug text-ink-muted">{item.label}</span>
+      </div>
+    ))}
   </div>
 </section>

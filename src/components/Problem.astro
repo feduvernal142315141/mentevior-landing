@@ -1,9 +1,22 @@
 ---
-// Los números quedan como "——" a propósito: no se fabrican estadísticas (§4.4).
+// Sin estadísticas fabricadas (§4.4): cada tarjeta agita un dolor concreto del
+// sector con icono + titular + consecuencia, no con un número inventado.
 const costs = [
-  { stat: "——", label: "hours a week re-entering the same data" },
-  { stat: "——", label: "claims denied over documentation gaps" },
-  { stat: "——", label: "authorizations expiring before anyone notices" },
+  {
+    title: "Hours lost to re-entry",
+    body: "The same session data, typed again into a second and third system — every single week.",
+    icon: "M8 8h12v12a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V8Z M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2",
+  },
+  {
+    title: "Denials that arrive weeks late",
+    body: "Documentation gaps stay invisible until the claim comes back — long after anyone can fix them.",
+    icon: "M14 3v5h5 M19 8v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5Z M9.5 12.5l5 5 M14.5 12.5l-5 5",
+  },
+  {
+    title: "Authorizations run out quietly",
+    body: "Units expire before anyone notices — and the sessions delivered against them don't get paid.",
+    icon: "M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20Z",
+  },
 ];
 ---
 
@@ -22,9 +35,24 @@ const costs = [
 
   <div class="mx-auto mt-14 grid max-w-[1000px] grid-cols-1 gap-5 px-6 sm:grid-cols-3 md:px-8">
     {costs.map((item, i) => (
-      <div class="feature-card reveal p-6 text-center" style={`--reveal-delay: ${i * 70}ms`}>
-        <p class="text-[30px] font-semibold tabular-nums text-ink-muted/60">{item.stat}</p>
-        <p class="mt-2 text-[14px] leading-relaxed text-ink-muted">{item.label}</p>
+      <div class="feature-card reveal p-6 text-left" style={`--reveal-delay: ${i * 70}ms`}>
+        <span class="icon-tile">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d={item.icon} />
+          </svg>
+        </span>
+        <h3 class="mt-4 text-[16.5px] font-semibold tracking-[-0.01em] text-ink">{item.title}</h3>
+        <p class="mt-2 text-body-sm leading-relaxed text-ink-muted">{item.body}</p>
       </div>
     ))}
   </div>

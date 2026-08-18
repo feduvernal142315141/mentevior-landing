@@ -1,4 +1,6 @@
 ---
+import StatusChip from "./StatusChip.astro";
+
 const items = [
   {
     title: "Monthly supervision reports",
@@ -15,7 +17,7 @@ const items = [
 ];
 ---
 
-<section class="px-6 py-[72px] md:px-8 lg:py-[128px]">
+<section class="px-6 py-[72px] md:px-8 lg:py-[128px]" id="supervision">
   <div class="mx-auto max-w-[1200px] rounded-[32px] bg-page-alt px-6 py-14 md:px-12 lg:px-16 lg:py-20">
     <div class="mx-auto max-w-[720px] text-center">
       <span class="eyebrow-pill text-eyebrow reveal">Compliance</span>
@@ -28,30 +30,28 @@ const items = [
       {items.map((item, i) => (
         <div class="feature-card reveal p-7" style={`--reveal-delay: ${i * 70}ms`}>
           <h3 class="text-h3">{item.title}</h3>
-          <p class="mt-3 text-[14.5px] leading-relaxed text-ink-muted">{item.body}</p>
+          <p class="mt-3 text-body-sm leading-relaxed text-ink-muted">{item.body}</p>
         </div>
       ))}
     </div>
 
-    <!-- Medidor de cumplimiento -->
-    <div class="reveal mx-auto mt-10 flex max-w-[440px] items-center gap-5 rounded-[20px] border border-line bg-white p-6" style="box-shadow: var(--shadow-card); --reveal-delay: 210ms" aria-hidden="true">
+    <!-- Medidor de cumplimiento. Escala 0–20%: 12.4% → barra al 62%,
+         requisito 10% → marca al 50%. Los números y la geometría cuadran. -->
+    <div class="reveal mx-auto mt-10 flex max-w-[440px] items-center gap-5 rounded-card border border-line bg-white p-6" style="box-shadow: var(--shadow-card); --reveal-delay: 210ms" aria-hidden="true">
       <div class="flex-1">
         <div class="flex items-baseline justify-between">
-          <span class="text-[12px] font-medium text-ink-muted">Supervision coverage</span>
-          <span class="text-[15px] font-semibold tabular-nums">12.4%</span>
+          <span class="text-micro font-medium text-ink-muted">Supervision coverage</span>
+          <span class="text-[15px] font-semibold tabular-nums"><span data-count="12.4">12.4</span>%</span>
         </div>
         <div class="mt-2 h-2.5 overflow-hidden rounded-full bg-[hsl(240_15%_93%)]">
           <div class="relative h-full w-full">
-            <div class="h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-400" style="width: 62%"></div>
-            <span class="absolute top-[-4px] h-[18px] w-0.5 rounded bg-ink-muted/50" style="left: 50%" title="10% requirement"></span>
+            <div class="meter-fill h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-400" style="--meter: 62%"></div>
+            <span class="absolute top-[-4px] h-[18px] w-0.5 rounded bg-ink-muted/50" style="left: 50%"></span>
           </div>
         </div>
         <p class="mt-1.5 text-[11px] text-ink-muted">Requirement: at least 10% of total hours</p>
       </div>
-      <span class="inline-flex items-center gap-1 rounded-full border border-[hsl(142_50%_82%)] bg-[hsl(142_60%_96%)] px-2.5 py-1 text-[11px] font-semibold text-[hsl(142_60%_30%)]">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-        Met
-      </span>
+      <StatusChip class="px-2.5 py-1">Met</StatusChip>
     </div>
   </div>
 </section>

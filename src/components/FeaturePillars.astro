@@ -1,13 +1,14 @@
 ---
-// Tres filas alternadas texto/visual (§4.5). Las filas 2 y 3 muestran CAPTURAS
-// REALES del producto (datos de prueba); la 1 es un mockup dibujado hasta tener
-// captura de session note.
+// Tres filas alternadas texto/visual (§4.5), las tres con CAPTURAS REALES del
+// producto (datos de prueba diseñados para demos).
 import { Picture } from "astro:assets";
+import sessionNoteShot from "../assets/shot-sessionnote.jpg";
 import dataCollectionShot from "../assets/shot-datacollection.png";
 import authorizationShot from "../assets/shot-authorization.png";
 
 const rows = [
   {
+    id: "clinical",
     eyebrow: "Clinical",
     title: "Documentation that matches how ABA actually works",
     body: "Session notes shaped to each billing code — 97153, 97155, 97156 — with CASP-aligned guidance built into every field. Treatment plans, assessments and clinical monthly reports come out of the same system your team already documents in.",
@@ -19,6 +20,7 @@ const rows = [
     ],
   },
   {
+    id: "data",
     eyebrow: "Data",
     title: "Collect data fast. See progress instantly.",
     body: "Datasheets and on-site counters built for the pace of a real session. Every occurrence lands on a live graph the moment it's recorded — no export, no transcription, no waiting for the monthly report to find out.",
@@ -30,6 +32,7 @@ const rows = [
     ],
   },
   {
+    id: "operations",
     eyebrow: "Operations",
     title: "Authorizations, scheduling and billing that talk to each other",
     body: "Scheduling with conflict detection, prior authorization unit tracking, claims and payer management, and expiration alerts for credentials and documents — all reading from the same source your clinical team writes to.",
@@ -62,6 +65,7 @@ const iconPaths: Record<string, string> = {
   <div class="mx-auto max-w-[1200px] space-y-[80px] px-6 md:px-8 lg:space-y-[96px] lg:px-12">
     {rows.map((row, index) => (
       <div
+        id={row.id}
         class:list={[
           "grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16",
           index === 1 && "lg:grid-cols-[45fr_55fr]",
@@ -72,14 +76,14 @@ const iconPaths: Record<string, string> = {
           <h2 class="text-h2 mt-5">{row.title}</h2>
           <p class="mt-5 max-w-[62ch] leading-relaxed text-ink-muted">{row.body}</p>
           <ul class="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-            {row.bullets.map((b) => (
-              <li class="flex items-center gap-3">
-                <span class="icon-tile !h-10 !w-10">
+            {row.bullets.map((b, bi) => (
+              <li class="reveal flex items-center gap-3" style={`--reveal-delay: ${160 + bi * 60}ms`}>
+                <span class="icon-tile h-10 w-10">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d={iconPaths[b.icon]} />
                   </svg>
                 </span>
-                <span class="text-[14.5px] font-medium">{b.label}</span>
+                <span class="text-body-sm font-medium">{b.label}</span>
               </li>
             ))}
           </ul>
@@ -88,40 +92,25 @@ const iconPaths: Record<string, string> = {
         <div
           class:list={["reveal", index % 2 === 1 && "lg:order-1"]}
           style="--reveal-delay: 120ms"
-          aria-hidden="true"
         >
           {index === 0 && (
-            <div class="feature-card relative mx-auto max-w-[480px] !rounded-[24px] p-6" style="box-shadow: var(--shadow-float)">
-              <div class="flex items-center justify-between">
-                <p class="text-[15px] font-semibold">Session Note · 97155</p>
-                <span class="rounded-full bg-[rgba(3,126,204,0.08)] px-2.5 py-1 text-[10.5px] font-semibold text-brand-500">Supervision</span>
-              </div>
-              <div class="mt-4 rounded-2xl border border-line bg-page p-4">
-                <p class="text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-muted">Narrative</p>
-                <div class="mt-2.5 space-y-2">
-                  {[100, 92, 96, 78].map((w) => (
-                    <div class="h-2 rounded-full bg-[hsl(240_15%_91%)]" style={`width:${w}%`}></div>
-                  ))}
-                </div>
-                <div class="mt-3 rounded-xl border border-[rgba(3,126,204,0.25)] bg-[rgba(3,126,204,0.05)] p-3">
-                  <p class="text-[10.5px] font-semibold text-brand-500">Guidance</p>
-                  <p class="mt-1 text-[11px] leading-relaxed text-ink-muted">Describe the protocol modifications observed face-to-face…</p>
-                </div>
-                <p class="mt-2.5 text-right text-[11px] tabular-nums text-[hsl(142_60%_32%)]">
-                  267 / 250–400 words ✓
-                </p>
-              </div>
-              <div class="mt-4 flex items-center justify-between rounded-2xl border border-line bg-white px-4 py-3">
-                <span class="text-[12px] text-ink-muted">Caregiver signature</span>
-                <svg viewBox="0 0 90 22" class="h-5 w-20 text-ink-secondary" aria-hidden="true">
-                  <path d="M2 16 C 12 4, 18 20, 28 12 S 44 4, 52 12 S 70 20, 88 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                </svg>
-              </div>
+            <div class="feature-card mx-auto max-w-[480px] rounded-frame p-2" style="box-shadow: var(--shadow-float)">
+              <Picture
+                src={sessionNoteShot}
+                formats={["avif"]}
+                fallbackFormat="webp"
+                widths={[480, 960, 1440]}
+                sizes="(min-width: 1024px) 465px, 92vw"
+                alt="Session note editor for CPT 97153 with recipient, provider, service details, session details and the goals section charting this session's data"
+                loading="lazy"
+                decoding="async"
+                class="w-full rounded-[18px] border border-line"
+              />
             </div>
           )}
 
           {index === 1 && (
-            <div class="feature-card mx-auto max-w-[560px] !rounded-[24px] p-2" style="box-shadow: var(--shadow-float)">
+            <div class="feature-card mx-auto max-w-[560px] rounded-frame p-2" style="box-shadow: var(--shadow-float)">
               <Picture
                 src={dataCollectionShot}
                 formats={["avif"]}
@@ -137,7 +126,7 @@ const iconPaths: Record<string, string> = {
           )}
 
           {index === 2 && (
-            <div class="feature-card mx-auto max-w-[440px] !rounded-[24px] p-2" style="box-shadow: var(--shadow-float)">
+            <div class="feature-card mx-auto max-w-[440px] rounded-frame p-2" style="box-shadow: var(--shadow-float)">
               <Picture
                 src={authorizationShot}
                 formats={["avif"]}

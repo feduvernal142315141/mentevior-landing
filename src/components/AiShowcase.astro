@@ -1,0 +1,67 @@
+---
+// "Improve with AI" — funcionalidad REAL del front-office (AiImprovableTextarea
+// → AWS Bedrock, por código de facturación y tipo de resumen). El visual es una
+// CAPTURA REAL del campo Session Summary: guía CASP por campo, contador de
+// palabras y el botón "Improve with AI".
+import { Picture } from "astro:assets";
+import Section from "./Section.astro";
+import aiSummaryShot from "../assets/shot-aisummary.png";
+---
+
+<Section id="ai" class="border-y border-line bg-page-alt">
+  <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <div class="reveal">
+      <span class="eyebrow-pill text-eyebrow">
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="m12 3 1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9L12 3Z" />
+        </svg>
+        Improve with AI
+      </span>
+      <h2 class="text-h2 mt-5">Session narratives, improved in one click</h2>
+      <p class="mt-5 max-w-[62ch] leading-relaxed text-ink-muted">
+        Rough notes become clean clinical prose without leaving the editor. The
+        suggestion is structured to the note's billing code and summary type —
+        face-to-face observation, protocol adjustments, active direction —
+        powered by AWS Bedrock.
+      </p>
+    </div>
+
+    <ul class="space-y-3.5">
+      {[
+        "Structured per billing code — 97153, 97155, 97156",
+        "CASP-aligned guidance and word targets on every field",
+        "Suggestions land in the editor — the clinician stays the author",
+      ].map((line, i) => (
+        <li class="reveal flex items-start gap-3" style={`--reveal-delay: ${120 + i * 60}ms`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-brand-500" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+          <span class="text-[15px] text-ink-secondary">{line}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Captura real del campo Session Summary -->
+  <div class="reveal mt-12" style="--reveal-delay: 120ms">
+    <div class="feature-card mx-auto max-w-[980px] rounded-frame p-2" style="box-shadow: var(--shadow-float)">
+      <Picture
+        src={aiSummaryShot}
+        formats={["avif"]}
+        fallbackFormat="webp"
+        widths={[720, 1080, 1438]}
+        sizes="(min-width: 1024px) 940px, 92vw"
+        alt="Session Summary field with CASP-aligned guidance bullets, a word-count target and the Improve with AI button"
+        loading="lazy"
+        decoding="async"
+        class="w-full rounded-[18px] border border-line"
+      />
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,133 @@
+---
+// FAQ con <details>/<summary> nativo — accesible por teclado sin JS. Las
+// respuestas se limitan a lo verificado en el producto (nada de EVV, portal
+// de padres ni certificaciones sin confirmar). El JSON-LD FAQPage sale del
+// mismo array para que nunca divergan.
+import Section from "./Section.astro";
+
+const faqs = [
+  {
+    q: "Is MenteVior HIPAA compliant?",
+    a: "Yes. MenteVior is built for protected health information: data is encrypted in transit and at rest, access is controlled per role and per action, every record keeps a full audit trail, and each organization's data is isolated from every other tenant.",
+  },
+  {
+    q: "Which CPT codes does documentation support?",
+    a: "Session notes are shaped to 97153, 97155 and 97156 — each with its own format and field-level guidance aligned to CASP recommendations, including word-count targets per narrative section.",
+  },
+  {
+    q: "Can we configure MenteVior to our workflows?",
+    a: "That's the core of the product. Service plans, billing codes, data collection methods, document templates and role permissions are all defined per organization — your clinic's setup, not a fixed mold.",
+  },
+  {
+    q: "How do caregivers sign session notes?",
+    a: "At the end of the session, the caregiver reviews and signs on-screen. The signature is captured directly in the note, so documentation leaves the session complete — nothing to chase later.",
+  },
+  {
+    q: "Does it work for multi-site organizations?",
+    a: "Yes. The Enterprise plan supports multiple locations under one organization, with custom service plan configuration and document templates shared or scoped as you need.",
+  },
+  {
+    q: "How does pricing work?",
+    a: "Pricing is tailored to your practice size and services across three plans — Basic, Pro and Enterprise. Book a demo and we'll scope it with your numbers; there's no setup fee to evaluate.",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Section id="faq" containerClass="max-w-[820px]">
+  <div class="text-center">
+    <span class="eyebrow-pill text-eyebrow reveal">FAQ</span>
+    <h2 class="text-h2 reveal mt-5" style="--reveal-delay: 70ms">Questions, answered</h2>
+  </div>
+
+  <div class="mt-12">
+    {faqs.map((faq, i) => (
+      <details class="faq-item reveal" style={`--reveal-delay: ${i * 50}ms`}>
+        <summary>
+          <span class="text-[16px] font-semibold tracking-[-0.01em] text-ink">{faq.q}</span>
+          <svg
+            class="faq-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </summary>
+        <p class="faq-answer text-body-sm leading-relaxed text-ink-muted">{faq.a}</p>
+      </details>
+    ))}
+  </div>
+
+  <p class="reveal mt-10 text-center text-caption text-ink-muted">
+    Something else?
+    <a href="#demo" class="font-medium text-brand-500 underline decoration-brand-500/30 underline-offset-4 transition-colors hover:text-brand-600">
+      Ask us in a demo
+    </a>
+  </p>
+</Section>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+<style>
+  .faq-item {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 4px;
+    cursor: pointer;
+    list-style: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary:focus-visible {
+    outline: none;
+    border-radius: var(--radius-control);
+    box-shadow: 0 0 0 3px rgba(3, 126, 204, 0.22);
+  }
+
+  .faq-icon {
+    flex-shrink: 0;
+    color: var(--color-ink-muted);
+    transition: transform 260ms var(--ease-out-quart), color 180ms var(--ease-standard);
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+    color: var(--color-brand-500);
+  }
+
+  .faq-answer {
+    padding: 0 4px 20px;
+    max-width: 62ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-icon {
+      transition: none;
+    }
+  }
+</style>
