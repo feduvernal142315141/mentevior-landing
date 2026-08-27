@@ -1,105 +1,457 @@
 ---
-// Estructura sin números (§4.9): los tiers existen en el modelo del backoffice
-// (basic/pro/enterprise) pero el precio es a medida. Los CTAs se diferencian
-// por tier: demo para Basic/Pro, contacto directo para Enterprise.
+// Un solo plan: $25 por usuario al mes, todo incluido.
+//
+// Decisiones de esta sección (y por qué):
+//  1. NADA de índigo aquí. §1.2 del prompt lo reserva para secciones oscuras
+//     full-bleed y esta sección va justo después de Security (índigo completo):
+//     dos piezas índigo pegadas apagan la página. El bloque es luminoso, con
+//     un hairline de gradiente de marca y un glow cian detrás.
+//  2. El precio es el foco de la sección, no una columna estrecha al lado de
+//     un checklist de 14 puntos. La oferta manda; el inventario va debajo.
+//  3. Calculadora de asientos: en un precio por usuario la pregunta real no es
+//     "cuánto cuesta" sino "cuánto me cuesta a mí". Es aritmética pura sobre el
+//     precio publicado, sin prometer nada nuevo.
+//  4. Los 14 items se agrupan en 4 bloques con nombre. Catorce checks sueltos
+//     se leen como lista de specs; agrupados se leen como plataforma.
 import { CALENDLY_URL, CONTACT_EMAIL } from "../config";
 
-const tiers = [
+const PRICE = 25;
+const DEFAULT_SEATS = 10;
+
+const groups = [
   {
-    name: "Basic",
-    tagline: "Solo practitioners and new practices",
-    featured: false,
-    features: [
+    label: "Clinical & supervision",
+    icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z",
+    items: [
       "Clinical documentation & session notes",
       "Data collection with live graphing",
-      "Scheduling",
-      "Client & caregiver management",
-      "Generated PDF reports",
+      "Supervision reports & case logs",
+      "Treatment plans & assessments",
     ],
   },
   {
-    name: "Pro",
-    tagline: "Growing clinics with a team",
-    featured: true,
-    features: [
-      "Everything in Basic",
-      "Supervision reports & case logs",
+    label: "Practice operations",
+    icon: "M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z",
+    items: [
+      "Conflict-aware scheduling",
+      "Client & caregiver management",
+      "Generated PDF reports",
+      "Multiple locations under one org",
+    ],
+  },
+  {
+    label: "Billing & authorizations",
+    icon: "M12 2v20m5-16H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
+    items: [
       "Prior authorization unit tracking",
       "Claims & payer management",
       "Credential & document tracking",
-      "Role-based permissions",
     ],
   },
   {
-    name: "Enterprise",
-    tagline: "Multi-site organizations",
-    featured: false,
-    cta: "Talk to sales",
-    features: [
-      "Everything in Pro",
-      "Multiple locations under one org",
+    label: "Admin & configuration",
+    icon: "M10.3 4.3a2 2 0 0 1 3.4 0l.5.9a2 2 0 0 0 2.3 1l1-.3a2 2 0 0 1 2.4 2.4l-.3 1a2 2 0 0 0 1 2.3l.9.5a2 2 0 0 1 0 3.4l-.9.5a2 2 0 0 0-1 2.3l.3 1a2 2 0 0 1-2.4 2.4l-1-.3a2 2 0 0 0-2.3 1l-.5.9a2 2 0 0 1-3.4 0l-.5-.9a2 2 0 0 0-2.3-1l-1 .3a2 2 0 0 1-2.4-2.4l.3-1a2 2 0 0 0-1-2.3l-.9-.5a2 2 0 0 1 0-3.4l.9-.5a2 2 0 0 0 1-2.3l-.3-1a2 2 0 0 1 2.4-2.4l1 .3a2 2 0 0 0 2.3-1ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+    items: [
+      "Role-based permissions",
       "Custom service plan configuration",
       "Custom document templates",
-      "Priority support",
     ],
   },
 ];
+
+// Lo que el precio NO factura aparte. Todo sale del propio modelo de una sola
+// oferta — no son promesas nuevas.
+const notCharged = [
+  "No tiers or feature gating",
+  "No modules sold separately",
+  "No per-location charge",
+];
 ---
 
-<section class="py-[72px] lg:py-[128px]" id="pricing">
-  <div class="mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
+<section class="relative overflow-hidden py-[72px] lg:py-[128px]" id="pricing">
+  <!-- Luz cian detrás de la oferta: la misma familia del hero, no un color nuevo -->
+  <div
+    class="pointer-events-none absolute left-1/2 top-24 h-[620px] w-[1100px] -translate-x-1/2"
+    style="background: radial-gradient(50% 50% at 50% 50%, rgba(3,126,204,0.09), transparent 70%)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
     <div class="mx-auto max-w-[720px] text-center">
       <span class="eyebrow-pill text-eyebrow reveal">Pricing</span>
       <h2 class="text-h2 reveal mt-5" style="--reveal-delay: 70ms">
-        Plans that grow with your practice
+        One plan. Everything included.
       </h2>
+      <p class="text-body-lg reveal mx-auto mt-5 max-w-[52ch] text-ink-muted" style="--reveal-delay: 140ms">
+        No tiers, no feature gating, no modules sold separately. You only pay for
+        the people using it.
+      </p>
     </div>
 
-    <div class="mx-auto mt-16 grid max-w-[1060px] grid-cols-1 items-start gap-6 lg:grid-cols-3">
-      {tiers.map((tier, i) => (
-        <div
-          class:list={[
-            "reveal relative rounded-card border bg-white p-8",
-            tier.featured
-              ? "border-[rgba(3,126,204,0.45)] lg:-translate-y-3"
-              : "border-line",
-          ]}
-          style={`box-shadow: ${tier.featured ? "0 20px 48px -12px rgba(3,126,204,0.18)" : "var(--shadow-card)"}; --reveal-delay: ${i * 70}ms`}
-        >
-          {tier.featured && (
-            <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-brand-500 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-white">
-              Most popular
+    <!-- ========== La oferta ========== -->
+    <div class="plan reveal" style="--reveal-delay: 120ms">
+      <div class="plan-inner">
+        <!-- Precio + CTA -->
+        <div class="plan-offer">
+          <p class="text-eyebrow text-brand-500">Complete platform</p>
+
+          <p class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount">{PRICE}</span>
+            <span class="plan-unit">
+              per user
+              <span class="block">per month</span>
             </span>
-          )}
+          </p>
 
-          <h3 class="text-h3">{tier.name}</h3>
-          <p class="mt-1 text-caption text-ink-muted">{tier.tagline}</p>
-          <p class="mt-5 text-[24px] font-semibold tracking-[-0.02em]">Custom pricing</p>
+          <p class="text-body-sm mt-5 max-w-[40ch] text-ink-secondary">
+            Every module, every role and every location in your organization —
+            at the same price per person.
+          </p>
 
-          <ul class="mt-6 space-y-3 border-t border-line pt-6">
-            {tier.features.map((feature) => (
-              <li class="flex items-start gap-2.5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-brand-500" aria-hidden="true">
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <a href={CALENDLY_URL} data-calendly class="btn-primary">Book a demo</a>
+            <a href={`mailto:${CONTACT_EMAIL}?subject=Pricing%20question`} class="btn-ghost">
+              Talk to sales
+            </a>
+          </div>
+
+          <p class="mt-5 text-micro text-ink-muted">
+            No credit card&ensp;·&ensp;No setup fee to evaluate
+          </p>
+        </div>
+
+        <!-- Calculadora de asientos: aritmética sobre el precio publicado -->
+        <div class="plan-calc" data-price={PRICE}>
+          <p class="text-eyebrow text-ink-muted">What it costs your team</p>
+
+          <p class="calc-total">
+            <span class="calc-total-currency">$</span><span
+              class="calc-total-amount"
+              data-calc-total
+              aria-live="polite">{(PRICE * DEFAULT_SEATS).toLocaleString("en-US")}</span
+            >
+            <span class="calc-total-unit">/mo</span>
+          </p>
+
+          <p class="text-caption mt-1 text-ink-muted">
+            <span data-calc-seats>{DEFAULT_SEATS}</span> users&nbsp;×&nbsp;${PRICE}
+          </p>
+
+          <label class="mt-6 block">
+            <span class="sr-only">Number of users</span>
+            <input
+              type="range"
+              class="calc-range"
+              min="1"
+              max="100"
+              step="1"
+              value={DEFAULT_SEATS}
+              data-calc-input
+              style={`--fill: ${((DEFAULT_SEATS - 1) / 99) * 100}%`}
+            />
+          </label>
+          <div class="mt-2 flex justify-between text-micro text-ink-muted">
+            <span>1 user</span>
+            <span>100+</span>
+          </div>
+
+          <ul class="mt-7 space-y-2.5 border-t border-line pt-6">
+            {notCharged.map((item) => (
+              <li class="flex items-start gap-2.5 text-caption text-ink-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mt-[4px] shrink-0 text-brand-500" aria-hidden="true">
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
-                <span class="text-caption leading-snug text-ink-secondary">{feature}</span>
+                <span>{item}</span>
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+    </div>
 
-          <a
-            href={tier.cta ? `mailto:${CONTACT_EMAIL}?subject=Enterprise%20inquiry` : CALENDLY_URL}
-            data-calendly={tier.cta ? undefined : true}
-            class:list={["mt-8 w-full", tier.featured ? "btn-primary" : "btn-ghost"]}
-          >
-            {tier.cta ?? "Book a demo"}
-          </a>
+    <!-- ========== Inventario ========== -->
+    <div class="reveal mt-16 flex items-center gap-5" style="--reveal-delay: 80ms">
+      <span class="h-px flex-1 bg-line"></span>
+      <span class="text-eyebrow shrink-0 text-ink-muted">Everything included</span>
+      <span class="h-px flex-1 bg-line"></span>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+      {groups.map((group, gi) => (
+        <div class="reveal" style={`--reveal-delay: ${gi * 80}ms`}>
+          <div class="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-brand-500" aria-hidden="true">
+              <path d={group.icon} />
+            </svg>
+            <h3 class="text-[14px] font-semibold tracking-[-0.005em] text-ink">{group.label}</h3>
+          </div>
+          <ul class="mt-4 space-y-2.5 border-t border-line pt-4">
+            {group.items.map((item) => (
+              <li class="flex items-start gap-2.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="mt-[4px] shrink-0 text-brand-500/70" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span class="text-caption leading-snug text-ink-secondary">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       ))}
     </div>
 
-    <p class="reveal mt-10 text-center text-caption text-ink-muted" style="--reveal-delay: 210ms">
-      Pricing is tailored to your practice size and services.
+    <p class="reveal mt-14 text-center text-caption text-ink-muted" style="--reveal-delay: 120ms">
+      Not sure how many users you need?{" "}
+      <a
+        href={`mailto:${CONTACT_EMAIL}?subject=Pricing%20question`}
+        class="font-medium text-brand-500 underline decoration-brand-500/30 underline-offset-4 transition-colors hover:text-brand-600"
+      >
+        We'll map it to your team
+      </a>
     </p>
   </div>
 </section>
+
+<script>
+  // Calculadora de asientos. Progresiva: el HTML ya viene con el total del
+  // valor por defecto, así que sin JS la pieza sigue siendo correcta.
+  document.querySelectorAll<HTMLElement>(".plan-calc").forEach((calc) => {
+    const input = calc.querySelector<HTMLInputElement>("[data-calc-input]");
+    const totalEl = calc.querySelector<HTMLElement>("[data-calc-total]");
+    const seatsEl = calc.querySelector<HTMLElement>("[data-calc-seats]");
+    if (!input || !totalEl || !seatsEl) return;
+
+    const price = Number(calc.dataset.price ?? 25);
+    const min = Number(input.min);
+    const max = Number(input.max);
+
+    const render = () => {
+      const seats = Number(input.value);
+      const atMax = seats >= max;
+      input.style.setProperty("--fill", `${((seats - min) / (max - min)) * 100}%`);
+      seatsEl.textContent = atMax ? `${seats}+` : String(seats);
+      totalEl.textContent = (seats * price).toLocaleString("en-US") + (atMax ? "+" : "");
+    };
+
+    input.addEventListener("input", render);
+    render();
+  });
+</script>
+
+<style>
+  /* ---------- Marco de la oferta ----------
+     Hairline de gradiente de marca (§1.1 permite el gradiente en filetes finos)
+     sobre superficie blanca. El peso lo da la sombra, no un relleno oscuro. */
+  .plan {
+    max-width: 1000px;
+    margin: 56px auto 0;
+    padding: 1px;
+    border-radius: calc(var(--radius-frame) + 1px);
+    background: linear-gradient(
+      140deg,
+      rgba(3, 126, 204, 0.45),
+      rgba(90, 200, 250, 0.35) 38%,
+      var(--color-line-strong) 70%
+    );
+    box-shadow: var(--shadow-float);
+  }
+
+  .plan-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+    border-radius: var(--radius-frame);
+    background: #fff;
+  }
+
+  /* El precio pesa más que la calculadora: 1.15fr contra una columna fija. */
+  @media (min-width: 900px) {
+    .plan-inner {
+      grid-template-columns: 1fr minmax(0, 372px);
+    }
+  }
+
+  .plan-offer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 28px;
+  }
+
+  @media (min-width: 900px) {
+    .plan-offer {
+      padding: 56px 48px;
+    }
+  }
+
+  /* ---------- Lockup del precio ---------- */
+  .plan-price {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+    color: var(--color-ink);
+  }
+
+  .plan-currency {
+    margin-top: 8px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--color-ink-muted);
+  }
+
+  .plan-amount {
+    margin-left: 3px;
+    font-size: clamp(4.5rem, 3.2rem + 4vw, 6rem); /* 72 → 96px */
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 0.8;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .plan-unit {
+    margin-left: 14px;
+    padding-top: 9px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--color-ink-muted);
+  }
+
+  /* ---------- Calculadora ---------- */
+  .plan-calc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px 28px 36px;
+    border-top: 1px solid var(--color-line);
+    background:
+      linear-gradient(180deg, var(--color-page-alt), #fff 65%);
+  }
+
+  @media (min-width: 900px) {
+    .plan-calc {
+      padding: 52px 36px;
+      border-top: 0;
+      border-left: 1px solid var(--color-line);
+    }
+  }
+
+  .calc-total {
+    display: flex;
+    align-items: baseline;
+    margin-top: 14px;
+    color: var(--color-ink);
+  }
+
+  .calc-total-currency {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+
+  .calc-total-amount {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .calc-total-unit {
+    margin-left: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-ink-muted);
+  }
+
+  /* Slider: pista con relleno de marca controlado por --fill desde JS. */
+  .calc-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .calc-range::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--color-brand-500) 0 var(--fill, 10%),
+      var(--color-line-strong) var(--fill, 10%) 100%
+    );
+  }
+
+  .calc-range::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--color-brand-500) 0 var(--fill, 10%),
+      var(--color-line-strong) var(--fill, 10%) 100%
+    );
+  }
+
+  .calc-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-top: -7px;
+    border-radius: 999px;
+    border: 1px solid rgba(2, 95, 154, 0.5);
+    background: linear-gradient(180deg, #1793e3, #037ecc);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      0 1px 3px rgba(2, 95, 154, 0.3),
+      0 4px 10px rgba(3, 126, 204, 0.22);
+    transition: transform 160ms var(--ease-standard);
+  }
+
+  .calc-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(2, 95, 154, 0.5);
+    background: linear-gradient(180deg, #1793e3, #037ecc);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      0 1px 3px rgba(2, 95, 154, 0.3),
+      0 4px 10px rgba(3, 126, 204, 0.22);
+    transition: transform 160ms var(--ease-standard);
+  }
+
+  .calc-range:hover::-webkit-slider-thumb,
+  .calc-range:active::-webkit-slider-thumb {
+    transform: scale(1.12);
+  }
+
+  .calc-range:hover::-moz-range-thumb,
+  .calc-range:active::-moz-range-thumb {
+    transform: scale(1.12);
+  }
+
+  .calc-range:focus-visible {
+    outline: none;
+  }
+
+  .calc-range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(3, 126, 204, 0.25);
+  }
+
+  .calc-range:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 4px rgba(3, 126, 204, 0.25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .calc-range::-webkit-slider-thumb,
+    .calc-range::-moz-range-thumb {
+      transition: none;
+    }
+  }
+</style>
