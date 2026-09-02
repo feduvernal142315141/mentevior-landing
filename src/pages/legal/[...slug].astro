@@ -1,0 +1,35 @@
+---
+// Una ruta por documento de la colección `legal`. Las fechas y la versión
+// salen del frontmatter, así que el <head>, el sello de la cabecera y el
+// sitemap siempre dicen lo mismo que el cuerpo del documento.
+import { getCollection, render } from "astro:content";
+import LegalLayout from "../../layouts/LegalLayout.astro";
+
+export async function getStaticPaths() {
+  const docs = (await getCollection("legal")).sort((a, b) => a.data.order - b.data.order);
+
+  return docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: {
+      doc,
+      // Los tres se leen en cadena: quien abre el BAA suele querer luego la
+      // Privacy Policy. Cada página ofrece los otros dos, en orden.
+      siblings: docs
+        .filter((d) => d.id !== doc.id)
+        .map((d) => ({
+          title: d.data.title,
+          shortTitle: d.data.shortTitle,
+          description: d.data.description,
+          href: `/legal/${d.id}`,
+        })),
+    },
+  }));
+}
+
+const { doc, siblings } = Astro.props;
+const { Content, headings } = await render(doc);
+---
+
+<LegalLayout {...doc.data} headings={headings} siblings={siblings}>
+  <Content />
+</LegalLayout>

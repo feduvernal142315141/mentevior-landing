@@ -5,12 +5,20 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  /* Las páginas legales publican su fecha de revisión y añaden su propio
+     JSON-LD (WebPage + BreadcrumbList); la landing no necesita ninguna. */
+  ogType?: string;
+  dateModified?: string;
+  extraLd?: Record<string, unknown>[];
 }
 
 const {
   title = "MenteVior — ABA Practice Management, All in One Place",
   description =
     "Data collection, session notes, supervision, authorizations and billing for ABA practices — connected end to end in one HIPAA-compliant platform.",
+  ogType = "website",
+  dateModified,
+  extraLd = [],
 } = Astro.props;
 
 const site = Astro.site ?? new URL("https://mentevior.com");
@@ -24,6 +32,14 @@ const orgLd = {
   url: site.href,
   logo: new URL("/logoMenteVior.png", site).href,
   email: "hello@mentevior.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "2328 S. Congress Ave",
+    addressLocality: "West Palm Beach",
+    addressRegion: "FL",
+    postalCode: "33406",
+    addressCountry: "US",
+  },
 };
 
 const appLd = {
@@ -51,7 +67,7 @@ const appLd = {
     <meta name="theme-color" content="#037ecc" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="MenteVior" />
     <meta property="og:url" content={canonical.href} />
     <meta property="og:title" content={title} />
@@ -63,9 +79,13 @@ const appLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage.href} />
+    {dateModified && <meta property="article:modified_time" content={dateModified} />}
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(orgLd)} />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(appLd)} />
+    {extraLd.map((ld) => (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)} />
+    ))}
 
     <!-- Antes de pintar: habilita el motion condicionado a JS + sin reduced-motion.
          Sin JS (o con reduced-motion) los medidores quedan en su estado final. -->

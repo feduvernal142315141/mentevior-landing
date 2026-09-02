@@ -1,0 +1,61 @@
+---
+// Tabla legal densa (California Notice at Collection: 9 filas × 5 columnas).
+// Un solo DOM: <table> real en desktop y fichas apiladas en móvil vía
+// data-label — nada duplicado para lectores de pantalla ni para el indexador.
+// El marco lleva la máscara de scroll; el hijo scrollea y es enfocable, que es
+// lo que WCAG pide de cualquier región con scroll propio.
+interface Props {
+  caption?: string;
+  headers: string[];
+  rows: string[][];
+}
+
+const { caption, headers, rows } = Astro.props;
+const [rowHeader, ...colHeaders] = headers;
+---
+
+<div class="legal-table-frame" data-table-frame>
+  <div
+    class="legal-table-wrap"
+    tabindex="0"
+    role="region"
+    aria-label={caption ?? "Data table"}
+  >
+    <table class="legal-table">
+      {caption && <caption>{caption}</caption>}
+      <thead>
+        <tr>
+          {headers.map((h) => <th scope="col">{h}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(([first, ...cells]) => (
+          <tr>
+            <th scope="row" data-label={rowHeader}>{first}</th>
+            {cells.map((cell, i) => <td data-label={colHeaders[i]}>{cell}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // La máscara sólo aparece si la tabla realmente se sale, y desaparece al
+  // llegar al final: si no hay nada más que ver, no hay nada que insinuar.
+  document.querySelectorAll<HTMLElement>("[data-table-frame]").forEach((frame) => {
+    const scroller = frame.querySelector<HTMLElement>(".legal-table-wrap");
+    if (!scroller) return;
+
+    const sync = () => {
+      const overflows = scroller.scrollWidth - scroller.clientWidth > 4;
+      const atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 4;
+      frame.dataset.scrollable = String(overflows);
+      frame.dataset.scrollEnd = String(overflows && atEnd);
+    };
+
+    sync();
+    scroller.addEventListener("scroll", sync, { passive: true });
+    new ResizeObserver(sync).observe(scroller);
+  });
+</script>

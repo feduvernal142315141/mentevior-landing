@@ -442,6 +442,12 @@
       backdrop-filter 300ms var(--ease-standard);
   }
 
+  /* Fuera de la home el nav se apoya sobre la cabecera índigo: al 0.72 el
+     fondo se colaba y los links en tinta perdían contraste. */
+  .site-nav.is-solid.is-scrolled {
+    background: rgba(255, 255, 255, 0.96);
+  }
+
   .site-nav.is-scrolled {
     background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(20px) saturate(1.5);
@@ -1450,5 +1456,593 @@
   .skip-link,
   .feature-card-dark:hover {
     transform: none;
+  }
+}
+
+/* =========================================================
+   LEGAL / TRUST — tipografía long-form.
+   El resto del sistema está afinado para marketing (display,
+   cards, vidrio); 50KB de texto legal necesitan otra cosa:
+   medida corta, ritmo amplio y jerarquía que aguante veinte
+   pantallas de scroll. Mismo lenguaje de color y curvatura.
+   ========================================================= */
+
+@layer components {
+  /* ── Rejilla: índice sticky + columna de lectura ── */
+  .legal-shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .legal-shell {
+      /* La columna de lectura es una pista explícita, no un 1fr: así el texto,
+         los filetes de los h2, los callouts y la tabla comparten un mismo borde
+         derecho. Con 1fr los párrafos cortaban 180px antes que los filetes y la
+         columna se leía a medio llenar. */
+      grid-template-columns: 268px minmax(0, 780px);
+      gap: 5rem;
+      align-items: start;
+    }
+  }
+
+  .legal-toc {
+    position: sticky;
+    /* nav 64px + aire */
+    top: 96px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  .legal-toc-link {
+    display: block;
+    padding: 6px 0 6px 14px;
+    border-left: 2px solid var(--color-line);
+    color: var(--color-ink-muted);
+    font-size: 13.5px;
+    line-height: 1.45;
+    transition:
+      color 200ms var(--ease-standard),
+      border-color 200ms var(--ease-standard);
+  }
+
+  .legal-toc-link:hover,
+  .legal-toc-link:focus-visible {
+    color: var(--color-ink);
+    border-left-color: var(--color-line-strong);
+    outline: none;
+  }
+
+  .legal-toc-link.is-active {
+    color: var(--color-brand-500);
+    border-left-color: var(--color-brand-500);
+    font-weight: 600;
+  }
+
+  /* ── Cuerpo del documento ── */
+  /* La medida la fija la pista de la rejilla (780px), no un max-width por
+     elemento: todo lo que hay dentro llena la columna y termina en la misma
+     vertical. A 18px eso da ~85 caracteres por línea — largo para un ensayo,
+     normal para un documento legal, que se escanea por cláusulas. */
+  .prose-legal {
+    color: var(--color-ink-secondary);
+    font-size: 18px;
+    line-height: 1.72;
+  }
+
+  .prose-legal > :first-child {
+    margin-top: 0;
+  }
+
+  .prose-legal p {
+    margin-top: 1.15rem;
+    text-wrap: pretty;
+  }
+
+  .prose-legal h2 {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: clamp(1.375rem, 1.2rem + 0.55vw, 1.625rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    scroll-margin-top: 96px;
+  }
+
+  .prose-legal h3 {
+    margin-top: 2.25rem;
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    scroll-margin-top: 96px;
+  }
+
+  .prose-legal h2 + p,
+  .prose-legal h3 + p,
+  .prose-legal h2 + ul,
+  .prose-legal h3 + ul {
+    margin-top: 0.85rem;
+  }
+
+  .prose-legal strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .prose-legal em {
+    font-style: italic;
+  }
+
+  .prose-legal a {
+    color: var(--color-brand-500);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 180ms var(--ease-standard);
+  }
+
+  .prose-legal a:hover {
+    color: var(--color-brand-600);
+  }
+
+  /* Los tres documentos son, sobre todo, listas. Marcador de marca,
+     sangría propia y aire entre ítems para que se lean como cláusulas. */
+  .prose-legal ul {
+    margin-top: 1.15rem;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .prose-legal ul > li {
+    position: relative;
+    margin-top: 0.6rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose-legal ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0.25rem;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: var(--color-brand-400);
+  }
+
+  .prose-legal ol {
+    margin-top: 1.15rem;
+    padding-left: 1.35rem;
+    list-style: decimal;
+  }
+
+  .prose-legal ol > li {
+    margin-top: 0.6rem;
+    padding-left: 0.35rem;
+  }
+
+  .prose-legal ol > li::marker {
+    color: var(--color-brand-500);
+    font-weight: 600;
+  }
+
+  .prose-legal hr {
+    margin: 3rem 0;
+    border: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* Permalink por sección: el legal se cita por cláusula
+     ("ver Subcontractors del BAA"), así que cada h2 se enlaza. */
+  .heading-anchor {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.4rem;
+    color: var(--color-brand-400);
+    opacity: 0;
+    vertical-align: middle;
+    transition: opacity 180ms var(--ease-standard);
+  }
+
+  .prose-legal h2:hover .heading-anchor,
+  .heading-anchor:focus-visible {
+    opacity: 1;
+    outline: none;
+  }
+
+  /* ── Callout: las advertencias que no pueden leerse como párrafo ── */
+  .legal-callout {
+    display: flex;
+    gap: 14px;
+    margin-top: 1.75rem;
+    padding: 20px 22px;
+    border-radius: var(--radius-card);
+    border: 1px solid rgba(3, 126, 204, 0.2);
+    background: rgba(3, 126, 204, 0.05);
+    color: var(--color-ink-secondary);
+    font-size: 15.5px;
+    line-height: 1.65;
+  }
+
+  .legal-callout--critical {
+    border-color: hsl(0 72% 51% / 0.22);
+    background: hsl(0 72% 51% / 0.04);
+  }
+
+  .legal-callout-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--color-brand-500);
+  }
+
+  .legal-callout--critical .legal-callout-icon {
+    color: var(--color-crit);
+  }
+
+  .legal-callout-title {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--color-ink);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  /* ── Disclaimer: los bloques en MAYÚSCULAS.
+     Legalmente deben ser conspicuos, así que las mayúsculas se
+     quedan; el tamaño, el tracking y el interlineado los sacan
+     de "muro ilegible" y los dejan en "nota deliberada". ── */
+  .legal-disclaimer {
+    margin-top: 1.75rem;
+    padding: 22px 24px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-page-alt);
+    color: var(--color-ink-secondary);
+    font-size: 14px;
+    letter-spacing: 0.015em;
+    line-height: 1.8;
+  }
+
+  .legal-disclaimer p + p {
+    margin-top: 1rem;
+  }
+
+  /* ── Tabla (California Notice at Collection).
+     Un solo DOM: tabla real en desktop, tarjetas apiladas en
+     móvil vía data-label. Nada duplicado para el lector de
+     pantalla ni para el indexador. ── */
+  /* El marco lleva el borde y la máscara; el hijo es el que scrollea. Una
+     cabecera sticky no sirve aquí: dentro de un contenedor con overflow-x el
+     `top` se mide contra el contenedor, no contra el viewport, y acaba
+     tapando la primera fila. */
+  .legal-table-frame {
+    position: relative;
+    margin-top: 1.75rem;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-line);
+    background: #fff;
+  }
+
+  /* Degradado en el borde derecho: avisa de que la tabla sigue */
+  .legal-table-frame::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    width: 56px;
+    border-radius: 0 var(--radius-card) var(--radius-card) 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff 70%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms var(--ease-standard);
+  }
+
+  .legal-table-frame[data-scrollable="true"]::after {
+    opacity: 1;
+  }
+
+  .legal-table-frame[data-scroll-end="true"]::after {
+    opacity: 0;
+  }
+
+  .legal-table-wrap {
+    border-radius: var(--radius-card);
+  }
+
+  .legal-table-wrap:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  .legal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    text-align: left;
+  }
+
+  .legal-table caption {
+    padding: 16px 20px 0;
+    color: var(--color-ink-muted);
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .legal-table th {
+    color: var(--color-ink);
+    font-weight: 600;
+    vertical-align: top;
+  }
+
+  .legal-table td {
+    color: var(--color-ink-secondary);
+    vertical-align: top;
+  }
+
+  @media (min-width: 900px) {
+    .legal-table-wrap {
+      overflow-x: auto;
+    }
+
+    .legal-table {
+      min-width: 760px;
+    }
+
+    .legal-table thead th {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-line-strong);
+      background: var(--color-page-alt);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .legal-table tbody td,
+    .legal-table tbody th {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .legal-table tbody tr:last-child td,
+    .legal-table tbody tr:last-child th {
+      border-bottom: 0;
+    }
+
+    .legal-table tbody tr:hover td,
+    .legal-table tbody tr:hover th {
+      background: rgba(3, 126, 204, 0.025);
+    }
+  }
+
+  /* Móvil: cada fila es una ficha, cada celda un par etiqueta/valor */
+  @media (max-width: 899px) {
+    .legal-table,
+    .legal-table tbody,
+    .legal-table tr,
+    .legal-table td,
+    .legal-table th {
+      display: block;
+    }
+
+    .legal-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    /* Con la tabla en `display: block` la caption deja de ser caption y se
+       encoge a una columna de una palabra por línea. */
+    .legal-table caption {
+      display: block;
+      padding: 18px 20px 0;
+      border-bottom: 1px solid var(--color-line);
+      padding-bottom: 14px;
+    }
+
+    .legal-table tbody tr {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .legal-table tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    .legal-table tbody th {
+      margin-bottom: 10px;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .legal-table tbody td {
+      padding-top: 10px;
+    }
+
+    .legal-table tbody td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 2px;
+      color: var(--color-ink-muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+
+  /* ── Meta del documento (fechas + versión) ── */
+  .legal-meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  /* ── Tarjeta de cross-link entre documentos ── */
+  .legal-doc-card {
+    display: block;
+    padding: 22px 24px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-line);
+    background: #fff;
+    box-shadow: var(--shadow-card);
+    transition:
+      transform 200ms var(--ease-standard),
+      border-color 200ms var(--ease-standard),
+      box-shadow 200ms var(--ease-standard);
+  }
+
+  .legal-doc-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(3, 126, 204, 0.3);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .legal-doc-card:focus-visible {
+    outline: none;
+    border-color: var(--color-brand-500);
+    box-shadow: 0 0 0 4px rgba(3, 126, 204, 0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legal-doc-card:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   PRINT — estos documentos se imprimen y se adjuntan a
+   contratos. Fuera cromo, fuera índice; las URLs se expanden
+   y cada sección abre página.
+   ========================================================= */
+
+@media print {
+  .site-nav,
+  .mobile-menu,
+  .legal-toc,
+  .skip-link,
+  .heading-anchor,
+  .no-print {
+    display: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  .legal-hero {
+    padding: 0 0 12pt !important;
+    border-bottom: 1pt solid #000;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .legal-hero * {
+    color: #000 !important;
+  }
+
+  .legal-meta-chip {
+    border-color: #999 !important;
+    background: none !important;
+  }
+
+  .legal-shell {
+    display: block;
+  }
+
+  .prose-legal {
+    max-width: none;
+    color: #000;
+    font-size: 10.5pt;
+    line-height: 1.55;
+  }
+
+  .prose-legal h2 {
+    break-before: page;
+    break-after: avoid;
+    color: #000;
+  }
+
+  .prose-legal h2:first-of-type {
+    break-before: auto;
+  }
+
+  .prose-legal h3 {
+    break-after: avoid;
+    color: #000;
+  }
+
+  .prose-legal ul > li,
+  .prose-legal ol > li,
+  .prose-legal p {
+    break-inside: avoid;
+  }
+
+  .prose-legal a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .prose-legal a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    word-break: break-all;
+  }
+
+  .legal-callout,
+  .legal-disclaimer,
+  .legal-table-frame {
+    break-inside: avoid;
+    border: 1pt solid #999 !important;
+    background: none !important;
+  }
+
+  .legal-table-frame::after {
+    display: none !important;
+  }
+
+  .legal-table-wrap {
+    overflow: visible !important;
+  }
+
+  .legal-table {
+    min-width: 0 !important;
+    font-size: 8.5pt;
+  }
+
+  .legal-table thead th {
+    background: none !important;
+  }
+
+  footer {
+    display: none !important;
   }
 }

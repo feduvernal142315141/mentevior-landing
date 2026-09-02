@@ -1,0 +1,252 @@
+---
+// Página de documento legal: banda índigo corta (no hero), índice sticky con
+// scroll-spy y columna de lectura a 68ch. El índice sale de los <h2> reales
+// del MDX, así que nunca se desincroniza del cuerpo del documento.
+import type { MarkdownHeading } from "astro";
+import Layout from "./Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  shortTitle: string;
+  description: string;
+  effective: string;
+  updated: string;
+  updatedISO: string;
+  version?: string;
+  headings: MarkdownHeading[];
+  siblings: { title: string; shortTitle: string; description: string; href: string }[];
+}
+
+const {
+  title,
+  shortTitle,
+  description,
+  effective,
+  updated,
+  updatedISO,
+  version,
+  headings,
+  siblings,
+} = Astro.props;
+
+// Sólo h2: los h3 son subcláusulas y saturarían una columna de 248px
+const toc = headings.filter((h) => h.depth === 2);
+
+const site = Astro.site ?? new URL("https://mentevior.com");
+const pageUrl = new URL(Astro.url.pathname, site).href;
+
+const extraLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: title,
+    description,
+    url: pageUrl,
+    dateModified: updatedISO,
+    publisher: { "@type": "Organization", name: "MenteVior LLC" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "MenteVior", item: site.href },
+      { "@type": "ListItem", position: 2, name: "Trust", item: new URL("/trust", site).href },
+      { "@type": "ListItem", position: 3, name: shortTitle, item: pageUrl },
+    ],
+  },
+];
+---
+
+<Layout
+  title={`${title} — MenteVior`}
+  description={description}
+  ogType="article"
+  dateModified={updatedISO}
+  extraLd={extraLd}
+>
+  <Nav />
+
+  <main id="main">
+    <!-- Banda índigo corta: sobre índigo, blanco o #5AC8FA — nunca #037ECC -->
+    <header class="legal-hero relative overflow-hidden bg-indigo-950 pt-[100px] pb-9 lg:pb-10">
+      <div
+        class="pointer-events-none absolute -right-40 -top-48 h-[560px] w-[560px] rounded-full"
+        style="background: radial-gradient(circle, rgba(90,200,250,0.12), transparent 65%)"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative mx-auto max-w-[1280px] px-6 md:px-8 lg:px-12">
+        <nav aria-label="Breadcrumb" class="mb-4">
+          <a
+            href="/trust"
+            class="text-caption inline-flex items-center gap-1.5 text-white/60 transition-colors hover:text-white"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            Trust &amp; legal
+          </a>
+        </nav>
+
+        <p class="text-eyebrow text-brand-300">Legal</p>
+        <h1 class="text-h2 mt-3 max-w-[20ch] text-white">{title}</h1>
+
+        <div class="mt-5 flex flex-wrap items-center gap-2.5">
+          <span class="legal-meta-chip">Effective {effective}</span>
+          <span class="legal-meta-chip">Last updated {updated}</span>
+          {version && <span class="legal-meta-chip">Version {version}</span>}
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-[1280px] px-6 pt-14 pb-[72px] md:px-8 lg:px-12 lg:pt-20 lg:pb-[128px]">
+      <div class="legal-shell">
+        <aside class="legal-toc hidden lg:block" aria-label="On this page">
+          <p class="text-eyebrow !text-[11px] mb-3 pl-4 text-ink-muted">On this page</p>
+          <nav>
+            {toc.map((h) => (
+              <a href={`#${h.slug}`} class="legal-toc-link" data-toc-link={h.slug}>{h.text}</a>
+            ))}
+          </nav>
+
+          <button type="button" class="btn-ghost no-print mt-6 !h-9 !px-3 !text-[13px]" data-print>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6Z" />
+            </svg>
+            Print or save as PDF
+          </button>
+        </aside>
+
+        <div>
+          <article class="prose-legal" data-legal-body>
+            <slot />
+          </article>
+
+          <!-- Los tres documentos se leen en cadena: quien abre el BAA suele
+               querer después la Privacy Policy. -->
+          <section class="mt-16 border-t border-line pt-12" aria-labelledby="more-legal">
+            <h2 id="more-legal" class="text-h3 text-ink">More from MenteVior</h2>
+            <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {siblings.map((doc) => (
+                <a href={doc.href} class="legal-doc-card">
+                  <span class="text-h3 block text-ink">{doc.shortTitle}</span>
+                  <span class="text-caption mt-2 block leading-relaxed text-ink-muted">
+                    {doc.description}
+                  </span>
+                  <span class="text-caption mt-4 inline-flex items-center gap-1.5 font-semibold text-brand-500">
+                    Read
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  // ── Scroll-spy del índice ──
+  // Nada de banda con IntersectionObserver: entre dos h2 legales caben pantallas
+  // enteras, y cuando ninguno cruza la banda el marcado se queda congelado en la
+  // sección anterior. Aquí se calcula la posición: activo = el último encabezado
+  // que ya pasó la línea de lectura.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
+  if (links.length) {
+    const sections = links
+      .map((link) => ({ link, el: document.getElementById(link.dataset.tocLink!) }))
+      .filter((s): s is { link: HTMLAnchorElement; el: HTMLElement } => Boolean(s.el));
+
+    const LINE = 140; // nav (64) + aire, la altura a la que se "lee"
+    let current: HTMLAnchorElement | null = null;
+    let queued = false;
+
+    const sync = () => {
+      queued = false;
+
+      let active = sections[0]?.link ?? null;
+      for (const { link, el } of sections) {
+        if (el.getBoundingClientRect().top <= LINE) active = link;
+        else break;
+      }
+
+      // Al final del documento gana la última: si no, las secciones cortas del
+      // pie nunca llegan a marcarse.
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        active = sections[sections.length - 1]?.link ?? active;
+      }
+
+      if (active === current) return;
+      current?.classList.remove("is-active");
+      active?.classList.add("is-active");
+      // Con veinte secciones el índice también scrollea: mantén el activo a la vista
+      active?.scrollIntoView({ block: "nearest" });
+      current = active;
+    };
+
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sync);
+    };
+
+    sync();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  }
+
+  // ── Permalink por cláusula: el legal se cita por sección ──
+  document.querySelectorAll<HTMLHeadingElement>("[data-legal-body] h2[id]").forEach((h) => {
+    const a = document.createElement("a");
+    a.href = `#${h.id}`;
+    a.className = "heading-anchor";
+    a.setAttribute("aria-label", `Link to “${h.textContent?.trim()}”`);
+    a.innerHTML =
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>';
+    h.appendChild(a);
+  });
+
+  document
+    .querySelector<HTMLButtonElement>("[data-print]")
+    ?.addEventListener("click", () => window.print());
+</script>

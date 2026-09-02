@@ -1,0 +1,305 @@
+---
+// Trust Center. Todo lo que se afirma aquí sale citado del BAA o de la Privacy
+// Policy — nada de sellos ni certificaciones de terceros, misma regla que
+// Security.astro. Es la página que un comprador abre antes de firmar.
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Section from "../components/Section.astro";
+import { CALENDLY_URL, CONTACT_EMAIL } from "../config";
+
+const docs = (await getCollection("legal")).sort((a, b) => a.data.order - b.data.order);
+
+// Compromisos con número, todos textuales del BAA. Son los que un comprador
+// pide por escrito y los que hoy no aparecían en ninguna parte del sitio.
+const commitments = [
+  {
+    stat: "72",
+    unit: "h",
+    label: "Breach notice",
+    body: "Initial notice of a breach, security incident or unauthorized disclosure, without unreasonable delay and no later than seventy-two hours after discovery.",
+    source: "Standard BAA — Security Incidents and Breach Reporting",
+  },
+  {
+    stat: "$1M",
+    unit: "",
+    label: "Cyber liability cover",
+    body: "Network-security, privacy-liability, regulatory-defense and breach-response coverage of at least $1,000,000 per claim and $1,000,000 in the aggregate.",
+    source: "Standard BAA — Insurance",
+  },
+  {
+    stat: "60",
+    unit: "d",
+    label: "Data export window",
+    body: "After a subscription ends, your data stays available for export for sixty days. You decide whether we return it or securely destroy it.",
+    source: "Standard BAA — PHI Following Termination",
+  },
+  {
+    stat: "10",
+    unit: "d",
+    label: "Individual-rights support",
+    body: "Records from a Designated Record Set delivered within ten business days of a written request — or sooner if your legal deadline requires it.",
+    source: "Standard BAA — Support for Individual Rights",
+  },
+];
+
+const safeguards = [
+  {
+    icon: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-12 0V7a5 5 0 0 1 10 0v4",
+    title: "Encryption in transit and at rest",
+    body: "ePHI encrypted on the wire and on disk using industry-standard methods, with company-scoped isolation across tenants.",
+  },
+  {
+    icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+    title: "Role-based, least-privilege access",
+    body: "Unique user identification and authentication controls. Permissions per module and per action — everyone sees exactly what their role requires.",
+  },
+  {
+    icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
+    title: "Audit logging and monitoring",
+    body: "Every record keeps its history — who created it, who changed it, and when. Security and activity logs are retained and monitored.",
+  },
+  {
+    icon: "M20 7h-9m9 5h-9m9 5h-9M4 7h.01M4 12h.01M4 17h.01",
+    title: "Vulnerability and patch management",
+    body: "Documented patching, secure-disposal processes, incident-response procedures and business-continuity procedures.",
+  },
+  {
+    icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm14 10v-2a4 4 0 0 0-3-3.87M20 3.13a4 4 0 0 1 0 7.75",
+    title: "Trained, bound workforce",
+    body: "Workforce members with access to PHI receive privacy and security training and are subject to confidentiality obligations.",
+  },
+  {
+    icon: "M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z",
+    title: "Subcontractors bound in writing",
+    body: "Any subcontractor that touches PHI is bound in writing to the same restrictions and must report security incidents and breaches to us.",
+  },
+];
+
+// Lo que NO hacemos. En healthcare esto vende más que una lista de features.
+const boundaries = [
+  {
+    title: "We don't sell your data",
+    body: "MenteVior does not sell personal information for money, and does not sell or share it for cross-context behavioral advertising.",
+  },
+  {
+    title: "We don't train AI on your data",
+    body: "MenteVior and its AI providers do not use Customer Data or PHI to train general-purpose AI models. The BAA prohibits it outright.",
+  },
+  {
+    title: "We don't run targeted advertising",
+    body: "No ad tech, no cross-context behavioral advertising, no advertising or marketing use of PHI — so there is no opt-out to chase.",
+  },
+  {
+    title: "We don't re-identify or monetize",
+    body: "No re-identification of de-identified information, no independent de-identification, no data monetization. Any other use needs a separate signed agreement.",
+  },
+];
+---
+
+<Layout
+  title="Trust & Security — MenteVior"
+  description="How MenteVior protects protected health information: HIPAA safeguards, our Standard BAA, breach-notice commitments, and the things we will never do with your data."
+>
+  <Nav />
+
+  <main id="main">
+    <section class="legal-hero relative overflow-hidden bg-indigo-950 pt-[136px] pb-[72px] lg:pb-[104px]">
+      <div
+        class="pointer-events-none absolute -right-40 -top-48 h-[620px] w-[620px] rounded-full"
+        style="background: radial-gradient(circle, rgba(90,200,250,0.14), transparent 65%)"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
+        <p class="text-eyebrow text-brand-300">Trust &amp; security</p>
+        <h1 class="text-h2 mt-4 max-w-[18ch] text-white">
+          The commitments behind “HIPAA compliant”
+        </h1>
+        <p class="text-body-lg mt-6 max-w-[58ch] text-white/70">
+          Every claim on this page is written into a document you can read in full and
+          attach to a contract. No third-party seals, no badges — just the safeguards we
+          are contractually bound to.
+        </p>
+
+        <div class="mt-9 flex flex-wrap gap-3.5">
+          <a href="/legal/baa" class="btn-on-dark-primary">Read the Standard BAA</a>
+          <a href={CALENDLY_URL} data-calendly class="btn-on-dark-ghost">Talk to us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compromisos con número: lo que un comprador pide por escrito -->
+    <Section id="commitments" class="bg-page-alt border-b border-line">
+      <div class="max-w-[720px]">
+        <span class="text-eyebrow eyebrow-pill reveal">In writing</span>
+        <h2 class="text-h2 reveal mt-5 text-ink" style="--reveal-delay: 70ms">
+          Four numbers we sign up to
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {commitments.map((item, i) => (
+          <div class="feature-card reveal p-7" style={`--reveal-delay: ${i * 70}ms`}>
+            <div class="flex items-baseline gap-0.5">
+              <span
+                class="text-[38px] font-bold leading-none tracking-[-0.03em] tabular-nums text-brand-500"
+              >
+                {item.stat}
+              </span>
+              <span class="text-[20px] font-bold leading-none text-brand-500">{item.unit}</span>
+            </div>
+            <h3 class="mt-4 text-[16.5px] font-semibold text-ink">{item.label}</h3>
+            <p class="text-caption mt-2 leading-relaxed text-ink-secondary">{item.body}</p>
+            <p class="text-micro mt-4 border-t border-line pt-3 text-ink-muted">{item.source}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Salvaguardas técnicas, todas del BAA y la Privacy Policy -->
+    <Section id="safeguards">
+      <div class="max-w-[720px]">
+        <span class="text-eyebrow eyebrow-pill reveal">Safeguards</span>
+        <h2 class="text-h2 reveal mt-5 text-ink" style="--reveal-delay: 70ms">
+          What protects the record
+        </h2>
+        <p class="text-body-lg reveal mt-5 text-ink-secondary" style="--reveal-delay: 140ms">
+          Administrative, physical and technical safeguards designed to meet the applicable
+          requirements of the HIPAA Security Rule.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {safeguards.map((card, i) => (
+          <div class="feature-card reveal p-7" style={`--reveal-delay: ${(i % 3) * 70}ms`}>
+            <span class="icon-tile">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d={card.icon} />
+              </svg>
+            </span>
+            <h3 class="mt-5 text-[16.5px] font-semibold text-ink">{card.title}</h3>
+            <p class="text-caption mt-2 leading-relaxed text-ink-secondary">{card.body}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- Lo que NO hacemos. En healthcare esto pesa más que una feature -->
+    <section class="relative overflow-hidden bg-indigo-900 py-[72px] lg:py-[128px]" id="boundaries">
+      <div
+        class="pointer-events-none absolute -left-32 -bottom-40 h-[520px] w-[520px] rounded-full"
+        style="background: radial-gradient(circle, rgba(90,200,250,0.1), transparent 65%)"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative mx-auto max-w-[1200px] px-6 md:px-8 lg:px-12">
+        <div class="max-w-[720px]">
+          <span class="text-eyebrow reveal inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-brand-300">
+            Boundaries
+          </span>
+          <h2 class="text-h2 reveal mt-5 text-white" style="--reveal-delay: 70ms">
+            And what we will never do with it
+          </h2>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {boundaries.map((item, i) => (
+            <div class="feature-card-dark reveal p-7" style={`--reveal-delay: ${(i % 2) * 70}ms`}>
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#5AC8FA"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18.4 5.6 5.6 18.4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              <h3 class="mt-4 text-[16.5px] font-semibold text-white">{item.title}</h3>
+              <p class="text-caption mt-2 leading-relaxed text-white/65">{item.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Los documentos, con su fecha de revisión a la vista -->
+    <Section id="documents" class="bg-page-alt border-t border-line">
+      <div class="max-w-[720px]">
+        <span class="text-eyebrow eyebrow-pill reveal">Documents</span>
+        <h2 class="text-h2 reveal mt-5 text-ink" style="--reveal-delay: 70ms">
+          Read them in full
+        </h2>
+        <p class="text-body-lg reveal mt-5 text-ink-secondary" style="--reveal-delay: 140ms">
+          Each document is published as a page you can link, print or attach — with its
+          effective date and version on the record.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-3">
+        {docs.map((doc, i) => (
+          <a
+            href={`/legal/${doc.id}`}
+            class="legal-doc-card reveal"
+            style={`--reveal-delay: ${i * 70}ms`}
+          >
+            <span class="text-micro block font-semibold uppercase tracking-[0.06em] text-brand-500">
+              Updated {doc.data.updated}
+            </span>
+            <span class="text-h3 mt-3 block text-ink">{doc.data.shortTitle}</span>
+            <span class="text-caption mt-2 block leading-relaxed text-ink-muted">
+              {doc.data.description}
+            </span>
+            <span class="text-caption mt-5 inline-flex items-center gap-1.5 font-semibold text-brand-500">
+              Read the document
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <p class="text-caption reveal mt-8 max-w-[68ch] leading-relaxed text-ink-muted">
+        Publishing the BAA on this page does not, by itself, create a business associate
+        relationship — it takes effect when it is incorporated into a signed order or
+        subscription agreement. Security questions or documentation requests:&nbsp;
+        <a
+          href={`mailto:${CONTACT_EMAIL}?subject=Security%20questionnaire`}
+          class="font-medium text-brand-500 underline underline-offset-4"
+        >
+          {CONTACT_EMAIL}
+        </a>
+      </p>
+    </Section>
+  </main>
+
+  <Footer />
+</Layout>

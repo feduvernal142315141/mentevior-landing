@@ -1,4 +1,53 @@
+# Los Terms of Use (/legal/terms) prohíben usar el contenido del sitio para
+# entrenar sistemas de IA sin autorización escrita. Aquí se hace cumplir:
+# se bloquean los crawlers de entrenamiento y se dejan pasar los de búsqueda,
+# que sí nos interesan para que MenteVior aparezca en resultados.
+
 User-agent: *
+Allow: /
+
+# ── Crawlers de entrenamiento: bloqueados ──
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+# ── Crawlers de búsqueda con IA: permitidos, no entrenan sobre el contenido ──
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://mentevior.com/sitemap-index.xml

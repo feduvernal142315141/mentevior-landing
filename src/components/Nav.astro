@@ -8,6 +8,11 @@
 import Logo from "./Logo.astro";
 import { CALENDLY_URL } from "../config";
 
+// El nav es compartido con /trust y /legal/*, donde las secciones de la
+// landing no existen: fuera de la home los anchors se emiten absolutos.
+const onHome = Astro.url.pathname === "/";
+const to = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
+
 const productLinks = [
   {
     label: "Session notes & documentation",
@@ -52,9 +57,9 @@ const productLinks = [
     icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
   },
   {
-    label: "Security",
-    desc: "HIPAA, encryption, full audit trail",
-    href: "#security",
+    label: "Trust & security",
+    desc: "HIPAA safeguards, BAA and legal documents",
+    href: "/trust",
     icon: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-12 0V7a5 5 0 0 1 10 0v4",
   },
 ];
@@ -67,7 +72,13 @@ const companyLinks = [
 ];
 ---
 
-<header class="site-nav enter-fade fixed inset-x-0 top-0 z-50" id="site-nav" style="--d: 0ms">
+<!-- En la home el nav es transparente sobre el hero. Fuera de ella la cabecera
+     es índigo: el nav arranca ya sólido o los links en tinta se perderían. -->
+<header
+  class:list={["site-nav enter-fade fixed inset-x-0 top-0 z-50", !onHome && "is-solid is-scrolled"]}
+  id="site-nav"
+  style="--d: 0ms"
+>
   <div class="nav-inner">
     <Logo />
 
@@ -99,7 +110,7 @@ const companyLinks = [
 
         <div class="nav-panel" id="product-panel">
           {productLinks.map((link) => (
-            <a href={link.href} class="nav-panel-link">
+            <a href={to(link.href)} class="nav-panel-link">
               <span class="icon-tile mt-0.5 h-9 w-9 rounded-[10px]">
                 <svg
                   width="17"
@@ -124,7 +135,7 @@ const companyLinks = [
         </div>
       </div>
 
-      {companyLinks.map((link) => <a href={link.href} class="nav-link">{link.label}</a>)}
+      {companyLinks.map((link) => <a href={to(link.href)} class="nav-link">{link.label}</a>)}
     </nav>
 
     <div class="hidden items-center gap-4 lg:flex">
@@ -160,7 +171,7 @@ const companyLinks = [
   <nav class="relative flex-1 overflow-y-auto px-6 pt-0" aria-label="Mobile">
     <span class="mobile-menu-group menu-enter" style="--i: 0">Product</span>
     {productLinks.map((link, i) => (
-      <a href={link.href} class="mobile-menu-link mobile-menu-link--sm menu-enter" style={`--i: ${i + 1}`}>
+      <a href={to(link.href)} class="mobile-menu-link mobile-menu-link--sm menu-enter" style={`--i: ${i + 1}`}>
         {link.label}
         <svg
           class="menu-arrow"
@@ -182,7 +193,7 @@ const companyLinks = [
 
     <span class="mobile-menu-group menu-enter" style="--i: 9">Company</span>
     {companyLinks.map((link, i) => (
-      <a href={link.href} class="mobile-menu-link mobile-menu-link--sm menu-enter" style={`--i: ${i + 10}`}>
+      <a href={to(link.href)} class="mobile-menu-link mobile-menu-link--sm menu-enter" style={`--i: ${i + 10}`}>
         {link.label}
         <svg
           class="menu-arrow"
@@ -208,7 +219,10 @@ const companyLinks = [
   </div>
 
   <p class="menu-enter relative px-6 pb-8 pt-1 text-center text-micro text-ink-muted" style="--i: 15">
-    HIPAA compliant · Role-based access · Built with BCBAs
+    <a href="/trust" class="underline underline-offset-4 transition-colors hover:text-ink">
+      HIPAA compliant
+    </a>
+    &ensp;·&ensp;Role-based access&ensp;·&ensp;Built with BCBAs
   </p>
 </div>
 
@@ -218,9 +232,11 @@ const companyLinks = [
   const menu = document.getElementById("mobile-menu")! as HTMLElement & { inert: boolean };
 
   // ── Estado scrolled ──
+  // Fuera de la home el nav no vuelve nunca a transparente: `is-solid` lo fija.
+  const solid = nav.classList.contains("is-solid");
   let menuOpen = false;
   const syncScrolled = () =>
-    nav.classList.toggle("is-scrolled", menuOpen || window.scrollY > 24);
+    nav.classList.toggle("is-scrolled", solid || menuOpen || window.scrollY > 24);
   syncScrolled();
   window.addEventListener("scroll", syncScrolled, { passive: true });
 
