@@ -19,17 +19,9 @@ interface Props {
   siblings: { title: string; shortTitle: string; description: string; href: string }[];
 }
 
-const {
-  title,
-  shortTitle,
-  description,
-  effective,
-  updated,
-  updatedISO,
-  version,
-  headings,
-  siblings,
-} = Astro.props;
+// `effective` y `version` siguen en el frontmatter (y en el schema) pero la
+// cabecera muestra un solo sello: las tres fechas eran la misma y sobraban dos.
+const { title, shortTitle, description, updated, updatedISO, headings, siblings } = Astro.props;
 
 // Sólo h2: los h3 son subcláusulas y saturarían una columna de 248px
 const toc = headings.filter((h) => h.depth === 2);
@@ -105,9 +97,7 @@ const extraLd = [
         <h1 class="text-h2 mt-3 max-w-[20ch] text-white">{title}</h1>
 
         <div class="mt-5 flex flex-wrap items-center gap-2.5">
-          <span class="legal-meta-chip">Effective {effective}</span>
-          <span class="legal-meta-chip">Last updated {updated}</span>
-          {version && <span class="legal-meta-chip">Version {version}</span>}
+          <span class="legal-meta-chip">Dated {updated}</span>
         </div>
       </div>
     </header>

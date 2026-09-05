@@ -18,28 +18,28 @@ const commitments = [
     stat: "72",
     unit: "h",
     label: "Breach notice",
-    body: "Initial notice of a breach, security incident or unauthorized disclosure, without unreasonable delay and no later than seventy-two hours after discovery.",
+    body: "Initial notice of a breach of unsecured PHI, a security incident involving PHI, or another material unauthorized use or disclosure — without unreasonable delay and no later than 72 hours after discovery.",
     source: "Standard BAA — Security Incidents and Breach Reporting",
   },
   {
     stat: "$1M",
     unit: "",
-    label: "Cyber liability cover",
-    body: "Network-security, privacy-liability, regulatory-defense and breach-response coverage of at least $1,000,000 per claim and $1,000,000 in the aggregate.",
+    label: "Cyber liability coverage",
+    body: "Network-security, privacy-liability, regulatory-defense, and breach-response coverage of at least $1 million per claim and $1 million in the aggregate.",
     source: "Standard BAA — Insurance",
   },
   {
     stat: "60",
     unit: "d",
-    label: "Data export window",
-    body: "After a subscription ends, your data stays available for export for sixty days. You decide whether we return it or securely destroy it.",
-    source: "Standard BAA — PHI Following Termination",
+    label: "Data-export window",
+    body: "After your subscription ends, your data remains available for export for 60 days, unless your agreement states otherwise. During that period, you may instruct us to return or securely destroy your PHI.",
+    source: "Standard BAA — Return or Destruction of PHI Following Termination",
   },
   {
     stat: "10",
     unit: "d",
     label: "Individual-rights support",
-    body: "Records from a Designated Record Set delivered within ten business days of a written request — or sooner if your legal deadline requires it.",
+    body: "Requested PHI and supporting information are made available to the customer within 10 business days after we receive the customer’s written request — or sooner when reasonably necessary to meet an applicable legal deadline.",
     source: "Standard BAA — Support for Individual Rights",
   },
 ];
@@ -48,52 +48,52 @@ const safeguards = [
   {
     icon: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-12 0V7a5 5 0 0 1 10 0v4",
     title: "Encryption in transit and at rest",
-    body: "ePHI encrypted on the wire and on disk using industry-standard methods, with company-scoped isolation across tenants.",
+    body: "ePHI is encrypted in transit and at rest using industry-standard methods.",
   },
   {
     icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
     title: "Role-based, least-privilege access",
-    body: "Unique user identification and authentication controls. Permissions per module and per action — everyone sees exactly what their role requires.",
+    body: "Role-based and least-privilege access, unique user identification, and appropriate authentication controls help restrict access to authorized users.",
   },
   {
     icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
     title: "Audit logging and monitoring",
-    body: "Every record keeps its history — who created it, who changed it, and when. Security and activity logs are retained and monitored.",
+    body: "Audit logging and monitoring support the detection and review of activity involving ePHI.",
   },
   {
     icon: "M20 7h-9m9 5h-9m9 5h-9M4 7h.01M4 12h.01M4 17h.01",
     title: "Vulnerability and patch management",
-    body: "Documented patching, secure-disposal processes, incident-response procedures and business-continuity procedures.",
+    body: "Vulnerability and patch management, secure-disposal processes, incident-response procedures, and business-continuity procedures support the protection and availability of ePHI.",
   },
   {
     icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm14 10v-2a4 4 0 0 0-3-3.87M20 3.13a4 4 0 0 1 0 7.75",
-    title: "Trained, bound workforce",
-    body: "Workforce members with access to PHI receive privacy and security training and are subject to confidentiality obligations.",
+    title: "Trained, accountable workforce",
+    body: "Workforce members with access to PHI receive appropriate privacy and security training and are subject to confidentiality obligations.",
   },
   {
     icon: "M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z",
     title: "Subcontractors bound in writing",
-    body: "Any subcontractor that touches PHI is bound in writing to the same restrictions and must report security incidents and breaches to us.",
+    body: "Before a subcontractor may create, receive, maintain, or transmit PHI, the subcontractor must agree in writing to applicable restrictions and safeguards and must report security incidents and breaches to MenteVior.",
   },
 ];
 
 // Lo que NO hacemos. En healthcare esto vende más que una lista de features.
 const boundaries = [
   {
-    title: "We don't sell your data",
-    body: "MenteVior does not sell personal information for money, and does not sell or share it for cross-context behavioral advertising.",
+    title: "We do not sell PHI",
+    body: "MenteVior does not sell PHI — we do not disclose it in exchange for payment or other remuneration.",
   },
   {
-    title: "We don't train AI on your data",
-    body: "MenteVior and its AI providers do not use Customer Data or PHI to train general-purpose AI models. The BAA prohibits it outright.",
+    title: "We do not use PHI to train general-purpose AI",
+    body: "MenteVior does not use PHI to develop or train general-purpose artificial-intelligence or machine-learning models. Subcontractors handling PHI must agree in writing to the applicable restrictions.",
   },
   {
-    title: "We don't run targeted advertising",
-    body: "No ad tech, no cross-context behavioral advertising, no advertising or marketing use of PHI — so there is no opt-out to chase.",
+    title: "We do not use PHI for advertising",
+    body: "MenteVior does not use PHI for advertising, marketing, fundraising, or data monetization.",
   },
   {
-    title: "We don't re-identify or monetize",
-    body: "No re-identification of de-identified information, no independent de-identification, no data monetization. Any other use needs a separate signed agreement.",
+    title: "We do not re-identify or monetize PHI",
+    body: "MenteVior does not re-identify de-identified information or independently de-identify, use, or monetize PHI. Any de-identification, use of de-identified information, or additional data use requires authorization through a separate written agreement.",
   },
 ];
 ---
@@ -136,7 +136,7 @@ const boundaries = [
       <div class="max-w-[720px]">
         <span class="text-eyebrow eyebrow-pill reveal">In writing</span>
         <h2 class="text-h2 reveal mt-5 text-ink" style="--reveal-delay: 70ms">
-          Four numbers we sign up to
+          Four commitments, by the numbers
         </h2>
       </div>
 
@@ -164,10 +164,10 @@ const boundaries = [
       <div class="max-w-[720px]">
         <span class="text-eyebrow eyebrow-pill reveal">Safeguards</span>
         <h2 class="text-h2 reveal mt-5 text-ink" style="--reveal-delay: 70ms">
-          What protects the record
+          How we safeguard health information
         </h2>
         <p class="text-body-lg reveal mt-5 text-ink-secondary" style="--reveal-delay: 140ms">
-          Administrative, physical and technical safeguards designed to meet the applicable
+          Administrative, physical, and technical safeguards designed to meet the applicable
           requirements of the HIPAA Security Rule.
         </p>
       </div>
@@ -212,7 +212,7 @@ const boundaries = [
             Boundaries
           </span>
           <h2 class="text-h2 reveal mt-5 text-white" style="--reveal-delay: 70ms">
-            And what we will never do with it
+            Clear boundaries for your data
           </h2>
         </div>
 
@@ -245,11 +245,11 @@ const boundaries = [
       <div class="max-w-[720px]">
         <span class="text-eyebrow eyebrow-pill reveal">Documents</span>
         <h2 class="text-h2 reveal mt-5 text-ink" style="--reveal-delay: 70ms">
-          Read them in full
+          Read the complete documents
         </h2>
         <p class="text-body-lg reveal mt-5 text-ink-secondary" style="--reveal-delay: 140ms">
-          Each document is published as a page you can link, print or attach — with its
-          effective date and version on the record.
+          Each document is available on a dedicated page that you can view, link to, print, or
+          download, with its effective or revision date clearly identified.
         </p>
       </div>
 
@@ -287,17 +287,43 @@ const boundaries = [
         ))}
       </div>
 
-      <p class="text-caption reveal mt-8 max-w-[68ch] leading-relaxed text-ink-muted">
-        Publishing the BAA on this page does not, by itself, create a business associate
-        relationship — it takes effect when it is incorporated into a signed order or
-        subscription agreement. Security questions or documentation requests:&nbsp;
+      <!-- Nota al pie de los tres documentos: banda a ancho completo para que
+           cierre visualmente el grid en vez de colgar suelta a la izquierda -->
+      <div
+        class="feature-card reveal mt-5 flex flex-col gap-5 p-7 md:flex-row md:items-center md:justify-between md:gap-8"
+      >
+        <p class="text-caption max-w-[76ch] leading-relaxed text-ink-secondary">
+          Publishing the BAA on this page does not, by itself, create a business associate
+          relationship — it takes effect when it is incorporated into a signed order or
+          subscription agreement.
+        </p>
+
         <a
           href={`mailto:${CONTACT_EMAIL}?subject=Security%20questionnaire`}
-          class="font-medium text-brand-500 underline underline-offset-4"
+          class="text-caption inline-flex shrink-0 items-center gap-2.5 font-semibold text-brand-500"
         >
-          {CONTACT_EMAIL}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+            <path d="m22 7-10 6L2 7" />
+          </svg>
+          <span class="flex flex-col gap-0.5">
+            <span class="text-micro font-semibold uppercase tracking-[0.06em] text-ink-muted">
+              Security questions or documentation requests
+            </span>
+            <span class="underline underline-offset-4">{CONTACT_EMAIL}</span>
+          </span>
         </a>
-      </p>
+      </div>
     </Section>
   </main>
 
