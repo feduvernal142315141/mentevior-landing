@@ -3,18 +3,18 @@
 // sector con icono + titular + consecuencia, no con un número inventado.
 const costs = [
   {
-    title: "Hours lost to re-entry",
-    body: "The same session data, typed again into a second and third system — every single week.",
+    title: "Entering the same data again",
+    body: "Staff spend valuable time copying session information from one system into the next.",
     icon: "M8 8h12v12a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V8Z M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2",
   },
   {
-    title: "Denials that arrive weeks late",
-    body: "Documentation gaps stay invisible until the claim comes back — long after anyone can fix them.",
+    title: "Errors found too late",
+    body: "Documentation gaps remain hidden until the claim is submitted — when they are harder to correct.",
     icon: "M14 3v5h5 M19 8v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5Z M9.5 12.5l5 5 M14.5 12.5l-5 5",
   },
   {
-    title: "Authorizations run out quietly",
-    body: "Units expire before anyone notices — and the sessions delivered against them don't get paid.",
+    title: "Authorized units lost",
+    body: "Without timely alerts, units can expire before anyone realizes they are running low.",
     icon: "M12 6v6l4 2 M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20Z",
   },
 ];
@@ -22,14 +22,14 @@ const costs = [
 
 <section class="py-[72px] lg:py-[128px]">
   <div class="mx-auto max-w-[720px] px-6 text-center md:px-8">
-    <span class="eyebrow-pill text-eyebrow reveal">The real cost of fragmentation</span>
+    <span class="eyebrow-pill text-eyebrow reveal">The hidden cost of disconnected systems</span>
     <h2 class="text-h2 reveal mt-5" style="--reveal-delay: 70ms">
-      Five systems. One clinician. Nothing reconciles.
+      Five systems. One clinician. Nothing stays in sync.
     </h2>
     <p class="text-body-lg reveal mx-auto mt-5 max-w-[62ch] text-ink-muted" style="--reveal-delay: 140ms">
       Behavior data in one tool. Session notes in another. Authorizations in a
-      spreadsheet, billing somewhere else. The errors don't show up when they happen —
-      they surface at the claim, weeks later.
+      spreadsheet. Billing somewhere else. By the time a mismatch appears, the claim may
+      already be delayed — or denied.
     </p>
   </div>
 
@@ -56,4 +56,8 @@ const costs = [
       </div>
     ))}
   </div>
+
+  <p class="text-body-lg reveal mt-10 px-6 text-center font-semibold text-ink md:px-8">
+    MenteVior keeps the entire workflow connected.
+  </p>
 </section>

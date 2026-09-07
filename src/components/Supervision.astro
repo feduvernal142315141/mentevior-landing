@@ -3,16 +3,16 @@ import StatusChip from "./StatusChip.astro";
 
 const items = [
   {
-    title: "Monthly supervision reports",
-    body: "Supervised hours, applied options and both signatures — assembled from the month's 97155 appointments, not re-typed.",
+    title: "Monthly RBT supervision reports",
+    body: "At least 5% of RBT supervised hours, documented supervision activities, and required signatures — assembled from the month’s qualifying 97155 appointments without duplicate entry.",
   },
   {
-    title: "Case supervision logs",
-    body: "Supervision coverage per client with the percentage calculated for you, and the requirement marked Met or Unmet.",
+    title: "Case-supervision coverage",
+    body: "Case-supervision coverage is calculated for each member against the requirement of at least 10% of applicable direct-treatment hours, with the current status marked Met or Unmet.",
   },
   {
     title: "Expiration alerts",
-    body: "Credentials, client documents and HR files with days-remaining tracking, surfaced before they lapse — not after.",
+    body: "Credentials, member documents, and HR files include days-remaining tracking and advance alerts before expiration.",
   },
 ];
 ---
@@ -49,9 +49,14 @@ const items = [
             <span class="absolute top-[-4px] h-[18px] w-0.5 rounded bg-ink-muted/50" style="left: 50%"></span>
           </div>
         </div>
-        <p class="mt-1.5 text-[11px] text-ink-muted">Requirement: at least 10% of total hours</p>
+        <p class="mt-1.5 text-[11px] text-ink-muted">Requirement: at least 10% of direct-treatment hours</p>
       </div>
       <StatusChip class="px-2.5 py-1">Met</StatusChip>
     </div>
+
+    <p class="text-caption reveal mx-auto mt-6 max-w-[62ch] text-center leading-relaxed text-ink-muted">
+      Case-supervision tracking is separate from the BACB’s ongoing supervision requirements
+      for RBT certification.
+    </p>
   </div>
 </section>

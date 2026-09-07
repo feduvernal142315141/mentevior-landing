@@ -12,17 +12,18 @@ import rolesShot from "../assets/shot-roles.png";
       <span class="eyebrow-pill text-eyebrow">Built to fit</span>
       <h2 class="text-h2 mt-5">Configured to your clinic, not the other way around</h2>
       <p class="mt-5 max-w-[62ch] leading-relaxed text-ink-muted">
-        Service plans, data collection methods, document templates and role permissions
-        are configured per organization. Your RBTs see exactly what they need. Your
-        billing analyst never touches a clinical note. Your templates match your payer
-        requirements — because you defined them.
+        Configure service plans, billing codes, data-collection methods, document templates,
+        and user permissions for your organization. Give each role access to the modules and
+        actions needed for its responsibilities while restricting access to unrelated
+        information. Templates can also be configured to reflect applicable payer and
+        documentation requirements.
       </p>
       <ul class="mt-8 space-y-3.5">
         {[
-          "Service plans and billing codes defined by your company",
-          "Data collection methods that match your clinical approach",
-          "Document templates per report type",
-          "Permissions per module and per action — not all-or-nothing",
+          "Company-defined service plans and billing codes",
+          "Configurable data-collection methods",
+          "Templates organized by document and report type",
+          "Module-level and action-level permissions",
         ].map((line, i) => (
           <li class="reveal flex items-start gap-3" style={`--reveal-delay: ${160 + i * 60}ms`}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-brand-500" aria-hidden="true">
