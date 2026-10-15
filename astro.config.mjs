@@ -28,14 +28,15 @@ export default defineConfig({
     "/legal": "/trust",
   },
   // Login neutral del front-office: la landing sólo enlaza, no autentica.
-  // En staging: PUBLIC_APP_LOGIN_URL=https://app.frontoffice.dev.mentevior.com/login
+  // Default en dev mientras producción no está lista; en prod:
+  // PUBLIC_APP_LOGIN_URL=https://app.frontoffice.mentevior.com/login
   env: {
     schema: {
       PUBLIC_APP_LOGIN_URL: envField.string({
         context: "client",
         access: "public",
         url: true,
-        default: "https://app.frontoffice.mentevior.com/login",
+        default: "https://app.frontoffice.dev.mentevior.com/login",
       }),
     },
   },
