@@ -3,7 +3,7 @@
 // credibilidad. Privacy, Terms y BAA ya son páginas reales, así que la columna
 // Legal entra. text-white/60 mínimo sobre indigo-950 para pasar WCAG AA.
 import Logo from "./Logo.astro";
-import { CALENDLY_URL, CONTACT_EMAIL } from "../config";
+import { APP_LOGIN_URL, CALENDLY_URL, CONTACT_EMAIL } from "../config";
 
 // El footer viaja a /trust y /legal/*, donde las secciones de la landing no
 // existen: fuera de la home los anchors se emiten absolutos.
@@ -19,6 +19,7 @@ const columns = [
       { label: "Improve with AI", href: "#ai" },
       { label: "Who it's for", href: "#roles" },
       { label: "Pricing", href: "#pricing" },
+      { label: "Sign in", href: APP_LOGIN_URL, ariaLabel: "Sign in to MenteVior" },
     ],
   },
   {
@@ -69,6 +70,7 @@ const year = new Date().getFullYear();
                 <a
                   href={to(link.href)}
                   data-calendly={link.calendly || undefined}
+                  aria-label={link.ariaLabel}
                   class="text-body-sm text-white/65 transition-colors hover:text-white"
                 >
                   {link.label}

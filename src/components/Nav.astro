@@ -6,7 +6,7 @@
 // a pantalla completa con los links agrupados (Product / Company) en stagger.
 
 import Logo from "./Logo.astro";
-import { CALENDLY_URL } from "../config";
+import { APP_LOGIN_URL, CALENDLY_URL } from "../config";
 
 // El nav es compartido con /trust y /legal/*, donde las secciones de la
 // landing no existen: fuera de la home los anchors se emiten absolutos.
@@ -138,8 +138,9 @@ const companyLinks = [
       {companyLinks.map((link) => <a href={to(link.href)} class="nav-link">{link.label}</a>)}
     </nav>
 
-    <div class="hidden items-center gap-4 lg:flex">
-      <!-- "Sign in" vuelve cuando exista una URL pública de la app -->
+    <div class="hidden items-center gap-3 lg:flex">
+      <!-- Login neutral del front-office: otro dominio, misma pestaña -->
+      <a href={APP_LOGIN_URL} class="btn-ghost h-11 px-5" aria-label="Sign in to MenteVior">Sign in</a>
       <a href={CALENDLY_URL} data-calendly class="btn-primary h-11">Book a demo</a>
     </div>
 
@@ -216,6 +217,7 @@ const companyLinks = [
 
   <div class="menu-enter relative space-y-3 px-6 pb-4 pt-4" style="--i: 14">
     <a href={CALENDLY_URL} data-calendly class="btn-primary w-full">Book a demo</a>
+    <a href={APP_LOGIN_URL} class="btn-ghost w-full" aria-label="Sign in to MenteVior">Sign in</a>
   </div>
 
   <p class="menu-enter relative px-6 pb-8 pt-1 text-center text-micro text-ink-muted" style="--i: 15">

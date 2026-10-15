@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
@@ -26,6 +26,18 @@ export default defineConfig({
     "/terms": "/legal/terms",
     "/baa": "/legal/baa",
     "/legal": "/trust",
+  },
+  // Login neutral del front-office: la landing sólo enlaza, no autentica.
+  // En staging: PUBLIC_APP_LOGIN_URL=https://app.frontoffice.dev.mentevior.com/login
+  env: {
+    schema: {
+      PUBLIC_APP_LOGIN_URL: envField.string({
+        context: "client",
+        access: "public",
+        url: true,
+        default: "https://app.frontoffice.mentevior.com/login",
+      }),
+    },
   },
   vite: {
     plugins: [tailwindcss()],
