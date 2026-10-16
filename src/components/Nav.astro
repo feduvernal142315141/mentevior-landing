@@ -144,18 +144,24 @@ const companyLinks = [
       <a href={CALENDLY_URL} data-calendly class="btn-primary h-11">Book a demo</a>
     </div>
 
-    <button
-      type="button"
-      id="menu-toggle"
-      class="nav-burger lg:hidden"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-    >
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-    </button>
+    <!-- Mobile/tablet: acceso directo al login junto al menú, como texto para
+         no competir con el burger ni con el CTA del hero -->
+    <div class="flex items-center gap-2.5 lg:hidden">
+      <a href={APP_LOGIN_URL} class="nav-link nav-signin-mobile" aria-label="Sign in to MenteVior">Sign in</a>
+
+      <button
+        type="button"
+        id="menu-toggle"
+        class="nav-burger lg:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+    </div>
   </div>
 </header>
 

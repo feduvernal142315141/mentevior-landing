@@ -648,6 +648,50 @@
   }
 
   /* Hamburger: tres líneas que se funden en una X */
+  /* "Sign in" junto al burger (< lg): texto con el subrayado de .nav-link,
+     alto táctil de 44px alineado al burger. Con el menú abierto se retira:
+     el menú trae su propio Sign in y el link quedaría fuera del focus trap. */
+  .nav-link.nav-signin-mobile {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 6px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    transition:
+      color 220ms var(--ease-standard),
+      opacity 220ms var(--ease-standard),
+      visibility 0s linear 0s;
+  }
+
+  .nav-link.nav-signin-mobile::after {
+    left: 6px;
+    right: 6px;
+    bottom: 10px;
+  }
+
+  .nav-link.nav-signin-mobile:hover,
+  .nav-link.nav-signin-mobile:focus-visible {
+    color: var(--color-brand-500);
+  }
+
+  .site-nav:has(.nav-burger[aria-expanded="true"]) .nav-signin-mobile {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 160ms var(--ease-standard),
+      visibility 0s linear 160ms;
+  }
+
+  /* Pantallas muy angostas: el logo necesita el ancho; el Sign in sigue en el menú */
+  @media (max-width: 359px) {
+    .nav-link.nav-signin-mobile {
+      display: none;
+    }
+  }
+
   .nav-burger {
     display: flex;
     flex-direction: column;
